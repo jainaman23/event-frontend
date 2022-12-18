@@ -1,58 +1,113 @@
 import React, { useEffect, useState } from 'react';
+import Script from 'next/script';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import FormLabel from '@mui/material/FormLabel';
-import RadioGroup from '@mui/material/RadioGroup';
+import FormGroup from '@mui/material/FormGroup';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Checkbox from '@mui/material/Checkbox';
 import FormHelperText from '@mui/material/FormHelperText';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import Radio from '@mui/material/Radio';
 import Divider from '@mui/material/Divider';
 import Paper from '@mui/material/Paper';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Container from '@components/atoms/GridContainer';
 import Item from '@components/atoms/GridItem';
-import { formattedAmount } from '@services/global';
 import { useForm, Controller } from 'react-hook-form';
 import { EMAIL_PATTERN } from '@constants/regex';
 import makeRequestWith from '@utils/apiService/client';
-import { DASHBOARD_ROUTES, ROUTES } from '@constants';
+import { ROUTES } from '@constants';
 import { useRouter } from 'next/router';
+import { formattedAmount } from '@services/global';
+import COLORS from '@theme/colors';
+import { PAYMENT_MERCHENT_SCRIPT } from '@constants/global';
+import ModalWithBlurredBg from '@organisms/Modal';
 
-const BATCH = ['2012-2016'];
+const BATCH = ['2012'];
+
+const PAYMENT_DETAILS = {
+  name: 'Event',
+  description: 'Alumni',
+  // image: IMAGES.LOGO_MINI,
+  callback_url: `http://${window.location.host}`,
+  notes: {
+    address: 'Razorpay Corporate Office',
+  },
+  theme: {
+    color: COLORS.primary.main,
+  },
+};
 
 const RegisterForm = () => {
+  const [showForm, setShowForm] = useState(false);
+  const [modalData, setModalData] = useState({ enable: false });
   const [plan, setPlan] = useState({});
+  const [membership, setMembership] = useState(false);
   const router = useRouter();
-  const {
-    handleSubmit,
-    control,
-    reset,
-    getValues,
-    formState: { errors },
-  } = useForm();
+  const { handleSubmit, control, reset, getValues } = useForm();
+
+  const handlePayment = async (userDetails, order) => {
+    if (order) {
+      const options = {
+        // ...result.order,
+        ...PAYMENT_DETAILS,
+        order_id: order.orderId,
+        key: order.keyId,
+        amount: order.amount,
+        handler: paymentSuccess,
+        prefill: {
+          name: userDetails.name,
+          email: userDetails.email,
+          contact: `+91${userDetails.mobileNumber}`,
+        },
+      };
+      // eslint-disable-next-line no-undef
+      var rzp1 = new Razorpay(options);
+      rzp1.on('payment.failed', paymentFailure);
+      rzp1.open();
+    }
+  };
+
+  const paymentSuccess = async (response) => {
+    if (response) {
+      setModalData({
+        enable: true,
+        title: 'Event Ticket',
+      });
+    }
+  };
+
+  const paymentFailure = (response) => {
+    alert(response.error.code);
+    alert(response.error.description);
+    alert(response.error.source);
+    alert(response.error.step);
+    alert(response.error.reason);
+    alert(response.error.metadata.order_id);
+    alert(response.error.metadata.payment_id);
+  };
 
   const onSubmitRegistration = async (data) => {
-    const batch = data.batch.split('-');
     const result = await makeRequestWith({
       method: 'POST',
       url: ROUTES.REGISTER,
       data: {
         name: data.name,
         email: data.email,
-        batch: { to: batch[1], from: batch[0] },
+        batch: data.batch,
         mobileNumber: data.mobileNumber,
         countryCode: '91',
-        joinMembership: false,
+        joinMembership: data.joinMembership ?? false,
       },
     });
 
     if (result) {
-      router.push(DASHBOARD_ROUTES.PAYMENT);
+      handlePayment(result.member, result.order);
     }
   };
 
@@ -64,13 +119,9 @@ const RegisterForm = () => {
     });
 
     if (result) {
-      let batch = '';
-      if (result.member?.batch) {
-        batch = `${result.member.batch.from}-${result.member.batch.to}`;
-      }
-
+      if (!result.isRegistered) setShowForm(true);
       reset({
-        batch,
+        batch: result.member?.batch,
         mobileNumber,
         name: result.member?.name,
         email: result.member?.email,
@@ -93,20 +144,48 @@ const RegisterForm = () => {
 
     fetchPlan();
   }, []);
+
   const formData = getValues();
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    if (formData.isMember) {
+    if (showForm) {
       return handleSubmit(onSubmitRegistration)();
     } else {
       return handleSubmit(onSubmitVerification)();
     }
   };
 
-  console.log(formData, 'formData', plan);
   return (
     <Box component="form" onSubmit={handleFormSubmit}>
+      <Script src={PAYMENT_MERCHENT_SCRIPT} />
+      {formData.isRegistered && (
+        <Box component={Paper} sx={{ mb: 2 }}>
+          <Alert severity="info">
+            <AlertTitle>Registration Status</AlertTitle>
+            You are already register for the event — To get the QRCode on your registered email id.
+            <strong>Click here </strong>
+          </Alert>
+        </Box>
+      )}
+      {formData.isMember && !formData.isRegistered && (
+        <Box component={Paper} sx={{ mb: 2 }}>
+          <Alert severity="info">
+            <AlertTitle>Membership Status</AlertTitle>
+            You are already a member — To register for an event, fill the below form and proceed
+            with the registration.
+          </Alert>
+        </Box>
+      )}
+      {!formData.isMember && !formData.isRegistered && showForm && (
+        <Box component={Paper} sx={{ mb: 2 }}>
+          <Alert severity="info">
+            <AlertTitle>Membership Status</AlertTitle>
+            You are not a registered member — To register for an event, fill the below form and
+            proceed with the registration.
+          </Alert>
+        </Box>
+      )}
       <Box component={Paper} sx={{ p: 4 }}>
         <Container justifyContent="center">
           <Item xs={12}>
@@ -114,7 +193,7 @@ const RegisterForm = () => {
               Alumni Event
             </Typography>
           </Item>
-          {!formData.isMember && (
+          {!showForm && (
             <Item xs={12}>
               <Typography sx={{ mb: 2 }}>Check your membership status</Typography>
             </Item>
@@ -131,6 +210,7 @@ const RegisterForm = () => {
                 return (
                   <TextField
                     {...field}
+                    disabled={showForm}
                     error={Boolean(error)}
                     label="Mobile Number"
                     helperText={error?.message}
@@ -138,7 +218,7 @@ const RegisterForm = () => {
                 );
               }}
             />
-            {!formData.isRegistered ? (
+            {showForm ? (
               <>
                 <Item xs={12}>
                   <Controller
@@ -216,59 +296,35 @@ const RegisterForm = () => {
                     Payment Details
                   </Typography>
                   {formData.isMember ? (
-                    <Box>
-                      <Typography>
-                        Congratulations! You are a member. Please continue to pay the amount
-                      </Typography>
-
-                      <Controller
-                        name="planId"
-                        defaultValue={null}
-                        control={control}
-                        render={({ field }) => (
-                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Radio {...field} checked={true} />
-                            <Typography variant="h6">
-                              {/* {formattedAmount(
-                                plan.filter((itm) => (itm.type = 'MEMBER'))[0].amount,
-                                { currency: 'INR' },
-                              )} */}
-                            </Typography>
-                          </Box>
-                        )}
-                      />
-                    </Box>
+                    <Typography>You are a member. Please continue to pay the amount</Typography>
                   ) : (
                     <Box>
                       <Controller
-                        name="planId"
-                        defaultValue={null}
+                        name="joinMembership"
+                        defaultValue={false}
                         control={control}
                         render={({ field }) => (
                           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <FormControl>
-                              <FormLabel id="demo-controlled-radio-buttons-group">
-                                Good Feeling! Join us. Please choose a option
-                              </FormLabel>
-                              <RadioGroup {...field}>
-                                <FormControlLabel
-                                  value={plan['NON_MEMBER']}
-                                  control={<Radio />}
-                                  label="Not a member! Pay this time only"
-                                />
-                                <FormControlLabel
-                                  value="male"
-                                  control={<Radio />}
-                                  label="Want to become a member"
-                                />
-                              </RadioGroup>
-                            </FormControl>
-                            <Typography variant="h6">
-                              {/* {formattedAmount(
-                                plan.filter((itm) => (itm.type = 'NON_MEMBER'))[0].amount,
-                                { currency: 'INR' },
-                              )} */}
-                            </Typography>
+                            <FormGroup {...field}>
+                              <FormControlLabel
+                                control={
+                                  <Checkbox
+                                    onChange={(e) => {
+                                      setMembership(e.target.checked);
+                                      field.onChange(e.target.checked);
+                                    }}
+                                    value={membership}
+                                    checked={field.value}
+                                  />
+                                }
+                                label={`Join Membership in ${formattedAmount(
+                                  plan['MEMBERSHIP']?.amount,
+                                  {
+                                    currency: 'INR',
+                                  },
+                                )} only`}
+                              />
+                            </FormGroup>
                           </Box>
                         )}
                       />
@@ -278,19 +334,54 @@ const RegisterForm = () => {
               </>
             ) : null}
             <Item xs={12}>
-              {formData.isMember === undefined ? (
+              {!showForm ? (
                 <Button variant="contained" color="primary" type="submit">
                   Verify
                 </Button>
               ) : (
-                <Button variant="contained" color="primary" type="submit">
-                  {formData.isMember ? 'Proceed To Continue' : 'Register & Proceed'}
-                </Button>
+                <>
+                  {formData.isRegistered ? (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                    >{`Proceed To Continue (${formattedAmount(plan['MEMBER'].amount, {
+                      currency: 'INR',
+                    })})`}</Button>
+                  ) : (
+                    <Button variant="contained" color="primary" type="submit">
+                      {`Register & Proceed (${formattedAmount(
+                        formData.joinMembership
+                          ? plan['MEMBERSHIP'].amount
+                          : plan['NON_MEMBER'].amount,
+                        {
+                          currency: 'INR',
+                        },
+                      )})`}
+                    </Button>
+                  )}
+                </>
               )}
             </Item>
+            {showForm && (
+              <Item xs={12}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="button"
+                  onClick={() => router.reload()}
+                >
+                  Reset
+                </Button>
+              </Item>
+            )}
           </Item>
         </Container>
       </Box>
+      <ModalWithBlurredBg
+        {...modalData}
+        modalStatus={(status) => setModalData({ enable: status })}
+      />
     </Box>
   );
 };
