@@ -1,0 +1,59 @@
+@media(max-width: 991px){
+body {
+    font-size: 14px;
+}
+.btn {
+	padding: 12px 25px;
+	font-size: 16px;
+}
+}
+
+@media(max-width: 767px){
+	.form_box .form-group {
+		padding: 15px;
+	}
+	.msosa-heading {
+		padding: 30px 15px;
+	}
+	.form_box .form-group.msosa-ticket label {
+		font-size: 18px;
+	}
+}
+@media(max-width: 576px){
+.head_sec ul {
+    flex-wrap: wrap;
+}
+.head_sec ul li {
+    margin: 10px 0px;
+    flex: 0 0 100%;
+}
+.heading_type1 h3 {
+    font-size: 26px;
+}
+.require_field {
+    margin-left: 0;
+    font-size: 12px;
+    margin-top: 20px;
+}
+.verify_sec .btn {
+    font-size: 10px;
+    padding: 5px;
+    top: 8px;
+}
+.verify_sec input.form-control {
+    padding-right: 95px;
+}
+.tree_body_form label {
+    font-size: 16px;
+}
+.tree_body_form {
+    /* padding: 20px; */
+}
+.visitor_sec h3 {
+    font-size: 20px;
+}
+.visitor_sec h4 {
+    font-size: 24px;
+}
+
+}
