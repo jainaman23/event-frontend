@@ -28,7 +28,9 @@ import COLORS from '@theme/colors';
 import { PAYMENT_MERCHENT_SCRIPT } from '@constants/global';
 import ModalWithBlurredBg from '@organisms/Modal';
 
-const BATCH = ['2012'];
+const BATCH = Array(52)
+  .fill()
+  .map((element, index) => index + 1970);
 
 const PAYMENT_DETAILS = {
   name: 'Event',
