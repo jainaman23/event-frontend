@@ -27,6 +27,7 @@ import { formattedAmount } from '@services/global';
 import COLORS from '@theme/colors';
 import { PAYMENT_MERCHENT_SCRIPT } from '@constants/global';
 import ModalWithBlurredBg from '@organisms/Modal';
+import EntryPass from '@components/molecules/EntryPass';
 
 const BATCH = Array(52)
   .fill()
@@ -35,7 +36,6 @@ const BATCH = Array(52)
 const PAYMENT_DETAILS = {
   name: 'Event',
   description: 'Alumni',
-  // image: IMAGES.LOGO_MINI,
   callback_url: `http://${window.location.host}`,
   notes: {
     address: 'Razorpay Corporate Office',
@@ -47,6 +47,7 @@ const PAYMENT_DETAILS = {
 
 const RegisterForm = () => {
   const [showForm, setShowForm] = useState(false);
+  const [paymentError, setPaymentError] = useState(false);
   const [modalData, setModalData] = useState({ enable: false });
   const [plan, setPlan] = useState({});
   const [membership, setMembership] = useState(false);
@@ -79,22 +80,18 @@ const RegisterForm = () => {
     if (response) {
       setModalData({
         enable: true,
-        title: 'Event Ticket',
+        title: 'Entry Pass',
+        children: <EntryPass />,
       });
     }
   };
 
   const paymentFailure = (response) => {
-    alert(response.error.code);
-    alert(response.error.description);
-    alert(response.error.source);
-    alert(response.error.step);
-    alert(response.error.reason);
-    alert(response.error.metadata.order_id);
-    alert(response.error.metadata.payment_id);
+    setPaymentError(true);
   };
 
   const onSubmitRegistration = async (data) => {
+    setPaymentError(false);
     const result = await makeRequestWith({
       method: 'POST',
       url: ROUTES.REGISTER,
@@ -129,6 +126,7 @@ const RegisterForm = () => {
         email: result.member?.email,
         isMember: result.isMember,
         isRegistered: result.isRegistered,
+        registrationId: result.member?._id,
       });
     }
   };
@@ -158,15 +156,47 @@ const RegisterForm = () => {
     }
   };
 
+  const handleEventEmail = async () => {
+    const result = await makeRequestWith({
+      method: 'POST',
+      url: ROUTES.SENT_EMAIL,
+      data: { registrationId: formData.registrationId },
+    });
+
+    if (result) {
+      paymentSuccess(result);
+    }
+  };
+
   return (
     <Box component="form" onSubmit={handleFormSubmit}>
       <Script src={PAYMENT_MERCHENT_SCRIPT} />
-      {formData.isRegistered && (
+      {paymentError && (
         <Box component={Paper} sx={{ mb: 2 }}>
-          <Alert severity="info">
+          <Alert severity="error">
+            <AlertTitle>Payment Status</AlertTitle>
+            Something went wrong. Please try again
+          </Alert>
+        </Box>
+      )}
+      {formData.isRegistered && (
+        <Box component={Paper} sx={{ mb: 2, '.MuiAlert-action': { alignItems: 'center' } }}>
+          <Alert
+            severity="info"
+            action={
+              <Button
+                color="inherit"
+                size="small"
+                variant="text"
+                onClick={handleEventEmail}
+                sx={{ p: 0.5, m: 0 }}
+              >
+                GET PASS
+              </Button>
+            }
+          >
             <AlertTitle>Registration Status</AlertTitle>
-            You are already register for the event — To get the QRCode on your registered email id.
-            <strong>Click here </strong>
+            You are already registered for the event
           </Alert>
         </Box>
       )}
@@ -206,7 +236,14 @@ const RegisterForm = () => {
               control={control}
               defaultValue=""
               rules={{
-                required: { value: true, message: 'Required' },
+                required: {
+                  value: true,
+                  message: 'Required',
+                },
+                pattern: {
+                  value: /^\d{10}$/,
+                  message: 'Incorrect Value',
+                },
               }}
               render={({ field, fieldState: { error } }) => {
                 return (
@@ -342,7 +379,7 @@ const RegisterForm = () => {
                 </Button>
               ) : (
                 <>
-                  {formData.isRegistered ? (
+                  {formData.isMember ? (
                     <Button
                       variant="contained"
                       color="primary"

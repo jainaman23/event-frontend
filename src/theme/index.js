@@ -56,20 +56,13 @@ theme = createTheme(theme, {
       },
       styleOverrides: {
         root: {
-          fontSize: theme.spacing(1.5),
-          borderRadius: '25px 25px 0 25px',
+          fontSize: theme.spacing(2),
+          borderRadius: '5px',
           letterSpacing: '0.5px',
           padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
           fontWeight: 500,
           marginBottom: '1rem',
-          [theme.breakpoints.up('md')]: {
-            padding: `${theme.spacing(1)} ${theme.spacing(4)}`,
-            fontSize: theme.spacing(2),
-          },
         },
-        // contained: {
-        //   background: theme.palette.primary.mainGradient,
-        // },
       },
     },
     PrivateNotchedOutline: {
