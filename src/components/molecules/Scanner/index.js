@@ -69,7 +69,7 @@ const LoginForm = ({ submitHandler }) => {
             constraints={{ facingMode: 'environment' }}
             onResult={(result, error) => {
               if (result) {
-                onSubmit(result?.text.split(':')[1]);
+                onSubmit(result?.text);
               }
 
               if (error) {

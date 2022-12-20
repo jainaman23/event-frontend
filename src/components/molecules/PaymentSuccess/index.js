@@ -54,11 +54,7 @@ export default function PaymentSuccess() {
         {registrationId && (
           <>
             <Item>
-              <QRCode
-                id="QRCode"
-                title="Entry Pass"
-                value={`https://api-events/api/v1/registerVerification/${registrationId}`}
-              />
+              <QRCode id="QRCode" title="Entry Pass" value={registrationId} />
             </Item>
             <Item>
               <Button onClick={handleClick}>Download</Button>
