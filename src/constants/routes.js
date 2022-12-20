@@ -4,8 +4,12 @@ export const ROUTES = {
   PLAN: '/api/v1/plan',
   SENT_EMAIL: '/api/v1/auth/send-email',
   LOGIN: '/api/v1/auth/login',
+  USERS: '/api/v1/user',
+  APPROVE: '/api/v1/coordinator/verifyQrCode',
 };
 
 export const PAGES_ROUTE = {
-  PAYMENT_SUCCESS: '/success',
+  PAYMENT_SUCCESS: '/event/success',
+  DASHBOARD: '/event/dashboard',
+  VERIFICATION: '/event/verification',
 };

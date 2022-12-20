@@ -30,7 +30,7 @@ const LoginForm = ({ submitHandler }) => {
         path: '/',
         expires: new Date(JWTContent.exp * 1000),
       });
-      window.location.href = '/dashboard';
+      window.location.href = '/event/dashboard';
     }
   };
 

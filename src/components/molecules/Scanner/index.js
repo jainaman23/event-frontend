@@ -1,58 +1,75 @@
 import React, { useState } from 'react';
 import { QrReader } from 'react-qr-reader';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Paper from '@mui/material/Paper';
 import Button from '@mui/lab/LoadingButton';
-import InputAdornment from '@mui/material/InputAdornment';
 import makeRequestWith from '../../../utils/apiService/client';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useForm, Controller } from 'react-hook-form';
-import { EMAIL_PATTERN } from '@constants/regex';
-import Container from '@components/atoms/GridContainer';
-import Item from '@components/atoms/GridItem';
-import { parseJwt } from '@services/global';
-import { setCookie } from '@services/storage';
+import CandidateDetails from '@molecules/CandidateDetails';
 import { ROUTES } from '@constants';
 
 const LoginForm = ({ submitHandler }) => {
-  const [data, setData] = useState('');
-  const { handleSubmit, control } = useForm();
+  const [userData, setUserData] = useState({});
+  const [successMessage, setSuccessMessage] = useState('');
 
-  const onSubmit = async (data) => {
-    const result = await makeRequestWith({ method: 'POST', url: ROUTES.LOGIN, data });
-    if (result) {
-      const { token } = result;
-      const JWTContent = parseJwt(token);
-      setCookie('token', token, {
-        path: '/',
-        expires: new Date(JWTContent.exp * 1000),
-      });
-      window.location.href = '/dashboard';
+  const onSubmit = async (registrationId) => {
+    const result = await makeRequestWith({ url: `${ROUTES.USERS}/${registrationId}` });
+    if (result && result.user) {
+      if (result.user?.isAttended) {
+        setSuccessMessage('Already Attended the event');
+        setUserData(result.user);
+      }
     }
   };
+
+  const handleApprove = React.useCallback(async (data) => {
+    const result = await makeRequestWith({
+      method: 'PATCH',
+      url: ROUTES.APPROVE,
+      data: { registrationId: data, isAttended: true },
+    });
+
+    if (result && result.user) {
+      setSuccessMessage('Member verified successfully');
+    }
+  }, []);
 
   const handleClick = () => {
     window.location.reload();
   };
 
   return (
-    <Box sx={{ maxWidth: '300px', margin: 'auto', textAlign: 'center' }}>
-      {data ? (
-        <Box>
-          {data}
-          <Button variant="contained" color="primary" onClick={handleClick}>
-            Approve
-          </Button>
+    <Box sx={{ margin: 'auto', textAlign: 'center' }}>
+      {successMessage && (
+        <Box component={Paper} sx={{ mb: 2 }}>
+          <Alert severity="error" sx={{ textAlign: 'left' }}>
+            <AlertTitle>Status</AlertTitle>
+            {successMessage}
+          </Alert>
+        </Box>
+      )}
+      {Object.keys(userData).length !== 0 ? (
+        <Box sx={{ mb: 1 }}>
+          <CandidateDetails details={{ candidate: userData }} />
+          {!userData.isAttended && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleApprove(userData._id)}
+              sx={{ mt: 2 }}
+            >
+              Approve
+            </Button>
+          )}
         </Box>
       ) : (
         <Box sx={{ borderRadius: '20px' }}>
           <QrReader
+            constraints={{ facingMode: 'environment' }}
             onResult={(result, error) => {
               if (result) {
-                setData(result?.text);
+                onSubmit(result?.text.split(':')[1]);
               }
 
               if (error) {
@@ -69,78 +86,6 @@ const LoginForm = ({ submitHandler }) => {
       </Button>
     </Box>
   );
-
-  // return (
-  //   <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-  //     <Container>
-  //       <Item xs={12} mb={4}>
-  //         <Typography variant="subtitle2">Login to your account</Typography>
-  //       </Item>
-  //       <Item xs={12}>
-  //         <Controller
-  //           name="email"
-  //           control={control}
-  //           defaultValue=""
-  //           rules={{
-  //             required: { value: true, message: 'Required' },
-  //             pattern: {
-  //               message: 'Invalid email address',
-  //               value: EMAIL_PATTERN,
-  //             },
-  //           }}
-  //           render={({ field, fieldState: { error } }) => {
-  //             return (
-  //               <TextField
-  //                 {...field}
-  //                 error={Boolean(error)}
-  //                 label="Email"
-  //                 helperText={error?.message}
-  //               />
-  //             );
-  //           }}
-  //         />
-  //       </Item>
-  //       <Item xs={12}>
-  //         <Controller
-  //           name="password"
-  //           control={control}
-  //           defaultValue=""
-  //           rules={{
-  //             required: { value: true, message: 'Required' },
-  //           }}
-  //           render={({ field, fieldState: { error } }) => {
-  //             return (
-  //               <TextField
-  //                 {...field}
-  //                 error={Boolean(error)}
-  //                 label="Password"
-  //                 helperText={error?.message}
-  //                 type={showPassword ? 'text' : 'password'}
-  //                 InputProps={{
-  //                   endAdornment: (
-  //                     <InputAdornment position="end">
-  //                       <IconButton
-  //                         aria-label="toggle password visibility"
-  //                         onClick={handleClickShowPassword}
-  //                       >
-  //                         {showPassword ? <Visibility /> : <VisibilityOff />}
-  //                       </IconButton>
-  //                     </InputAdornment>
-  //                   ),
-  //                 }}
-  //               />
-  //             );
-  //           }}
-  //         />
-  //       </Item>
-  //       <Item xs={12}>
-  //         <Button variant="contained" color="primary" type="submit">
-  //           Login
-  //         </Button>
-  //       </Item>
-  //     </Container>
-  //   </Box>
-  // );
 };
 
 export default LoginForm;
