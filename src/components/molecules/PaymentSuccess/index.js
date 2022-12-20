@@ -47,8 +47,8 @@ export default function PaymentSuccess() {
         </Item>
         <Item>
           <Typography>
-            Download your entry QR code and don't share it to anyone. It will work only for single
-            entry.
+            {`Download your entry QR code and don't share it to anyone. It will work only for single
+            entry.`}
           </Typography>
         </Item>
         {registrationId && (

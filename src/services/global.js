@@ -74,8 +74,6 @@ export const handleCopyLink = (text) => {
   navigator.clipboard.writeText(text);
 };
 
-export const getJobUrl = (id) => `${window.location.origin}${DASHBOARD_ROUTES.JOB_POST(id)}`;
-
 export const percentCompleted = (progressEvent) =>
   Math.round((progressEvent.loaded * 100) / progressEvent.total);
 

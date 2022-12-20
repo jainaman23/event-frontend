@@ -25,7 +25,7 @@ import { PAGES_ROUTE, ROUTES } from '@constants';
 import { useRouter } from 'next/router';
 import { formattedAmount } from '@services/global';
 import COLORS from '@theme/colors';
-import { PAYMENT_MERCHENT_SCRIPT } from '@constants/global';
+import PAYMENT_MERCHENT_SCRIPT from '@constants/global';
 import ModalWithBlurredBg from '@organisms/Modal';
 
 const BATCH = Array(52)
@@ -384,13 +384,11 @@ const RegisterForm = () => {
               ) : (
                 <>
                   {formData.isMember ? (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      type="submit"
-                    >{`Proceed To Continue (${formattedAmount(plan['MEMBER'].amount, {
-                      currency: 'INR',
-                    })})`}</Button>
+                    <Button variant="contained" color="primary" type="submit">
+                      {`Proceed To Continue (${formattedAmount(plan['MEMBER'].amount, {
+                        currency: 'INR',
+                      })})`}
+                    </Button>
                   ) : (
                     <Button variant="contained" color="primary" type="submit">
                       {`Proceed & Pay(${formattedAmount(
