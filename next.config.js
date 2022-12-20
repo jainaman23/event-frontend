@@ -1,29 +1,20 @@
-const { i18n } = require("./next-i18next.config");
+const { i18n } = require('./next-i18next.config');
 
-const withBundleAnalyzer = require("@next/bundle-analyzer")({
-  enabled: process.env.ANALYZE === "true",
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
 });
 
-const DEV_ENV = process.env.NODE_ENV === "development";
+const DEV_ENV = process.env.NODE_ENV === 'development';
 
 const nextConfig = {
-  async redirects() {
-    return [
-      {
-        source: "/dashboard",
-        destination: "/dashboard/home",
-        permanent: true,
-      },
-    ];
-  },
   async headers() {
     return [
       {
-        source: "/:path*",
+        source: '/:path*',
         headers: [
           {
-            key: "X-Frame-Options",
-            value: "SAMEORIGIN",
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN',
           },
         ],
       },
@@ -32,12 +23,7 @@ const nextConfig = {
   reactStrictMode: DEV_ENV,
   poweredByHeader: false,
   images: {
-    domains: [
-      "www.google.com",
-      "localhost",
-      "cdn.pixabay.com",
-      "upload.wikimedia.org",
-    ],
+    domains: ['localhost'],
   },
   i18n,
   webpack: (config, { isServer }) => {
@@ -47,27 +33,27 @@ const nextConfig = {
     config.module.rules.push({
       test: /\.(eot|woff|woff2|ttf|png|jpg|gif|otf)$/,
       use: {
-        loader: "url-loader",
+        loader: 'url-loader',
         options: {
           limit: 100000,
-          name: "[name].[ext]",
+          name: '[name].[ext]',
         },
       },
     });
     config.module.rules.push({
       test: /\.(woff|woff2|eot|ttf|otf)$/i,
       use: {
-        loader: "file-loader",
+        loader: 'file-loader',
         options: {
           limit: 100000,
-          name: "[name].[ext]",
+          name: '[name].[ext]',
         },
       },
     });
     config.module.rules.push({
       test: /\.svg$/i,
       issuer: /\.[jt]sx?$/,
-      use: ["@svgr/webpack", "url-loader"],
+      use: ['@svgr/webpack', 'url-loader'],
     });
     return config;
   },
