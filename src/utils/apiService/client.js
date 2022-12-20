@@ -81,7 +81,7 @@ const makeRequestWith = (BASE_TYPE) => {
         document.dispatchEvent(new CustomEvent('siteLoader', { detail: { status: false } }));
         if (status >= 200 && status < 300) {
           const { data, message, pagination = null } = resData;
-          if (message) sendNotification({ message, type: 'success' });
+          // if (message) sendNotification({ message, type: 'success' });
 
           return { ...data, pagination };
         }

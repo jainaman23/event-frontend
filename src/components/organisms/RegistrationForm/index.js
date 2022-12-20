@@ -204,8 +204,8 @@ const RegisterForm = () => {
         <Box component={Paper} sx={{ mb: 2 }}>
           <Alert severity="info">
             <AlertTitle>Membership Status</AlertTitle>
-            You are already a member — To register for an event, fill the below form and proceed
-            with the registration.
+            You are already a lifetime member — To register for an event, fill the below form and
+            proceed with the registration.
           </Alert>
         </Box>
       )}
@@ -213,7 +213,7 @@ const RegisterForm = () => {
         <Box component={Paper} sx={{ mb: 2 }}>
           <Alert severity="info">
             <AlertTitle>Membership Status</AlertTitle>
-            You are not a registered member — To register for an event, fill the below form and
+            You are not a lifetime member — To register for an event, fill the below form and
             proceed with the registration.
           </Alert>
         </Box>
@@ -335,7 +335,9 @@ const RegisterForm = () => {
                     Payment Details
                   </Typography>
                   {formData.isMember ? (
-                    <Typography>You are a member. Please continue to pay the amount</Typography>
+                    <Typography>
+                      You are a lifetime member. Please continue to pay the amount
+                    </Typography>
                   ) : (
                     <Box>
                       <Controller
@@ -343,7 +345,13 @@ const RegisterForm = () => {
                         defaultValue={false}
                         control={control}
                         render={({ field }) => (
-                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              whiteSpace: 'break-spaces',
+                            }}
+                          >
                             <FormGroup {...field}>
                               <FormControlLabel
                                 control={
@@ -356,7 +364,7 @@ const RegisterForm = () => {
                                     checked={field.value}
                                   />
                                 }
-                                label={`Join Membership in ${formattedAmount(
+                                label={`Join Lifetime Membership in ${formattedAmount(
                                   plan['MEMBERSHIP']?.amount,
                                   {
                                     currency: 'INR',
@@ -389,7 +397,7 @@ const RegisterForm = () => {
                     })})`}</Button>
                   ) : (
                     <Button variant="contained" color="primary" type="submit">
-                      {`Register & Proceed (${formattedAmount(
+                      {`Proceed & Pay(${formattedAmount(
                         formData.joinMembership
                           ? plan['MEMBERSHIP'].amount
                           : plan['NON_MEMBER'].amount,

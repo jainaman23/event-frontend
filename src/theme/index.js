@@ -55,13 +55,17 @@ theme = createTheme(theme, {
         variant: 'contained',
       },
       styleOverrides: {
-        root: {
+        contained: {
           fontSize: theme.spacing(2),
           borderRadius: '5px',
           letterSpacing: '0.5px',
           padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
           fontWeight: 500,
           marginBottom: '1rem',
+          backgroundColor: '#bb3d40',
+          '&:hover': {
+            backgroundColor: '#1e9558',
+          },
         },
       },
     },
@@ -108,6 +112,7 @@ theme = createTheme(theme, {
       styleOverrides: {
         root: {
           padding: 0,
+          backgroundColor: '#2b81be',
         },
       },
     },
@@ -195,6 +200,13 @@ theme = createTheme(theme, {
     MuiAvatar: {
       defaultProps: {
         imgProps: { crossOrigin: 'anonymous' },
+      },
+    },
+    MuiAlert: {
+      styleOverrides: {
+        message: {
+          whiteSpace: 'break-spaces',
+        },
       },
     },
   },
