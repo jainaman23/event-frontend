@@ -4,3 +4,7 @@ export const ROUTES = {
   PLAN: '/api/v1/plan',
   SENT_EMAIL: '/api/v1/auth/send-email',
 };
+
+export const PAGES_ROUTE = {
+  PAYMENT_SUCCESS: '/success',
+};

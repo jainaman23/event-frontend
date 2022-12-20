@@ -21,13 +21,12 @@ import Item from '@components/atoms/GridItem';
 import { useForm, Controller } from 'react-hook-form';
 import { EMAIL_PATTERN } from '@constants/regex';
 import makeRequestWith from '@utils/apiService/client';
-import { ROUTES } from '@constants';
+import { PAGES_ROUTE, ROUTES } from '@constants';
 import { useRouter } from 'next/router';
 import { formattedAmount } from '@services/global';
 import COLORS from '@theme/colors';
 import { PAYMENT_MERCHENT_SCRIPT } from '@constants/global';
 import ModalWithBlurredBg from '@organisms/Modal';
-import EntryPass from '@components/molecules/EntryPass';
 
 const BATCH = Array(52)
   .fill()
@@ -46,12 +45,12 @@ const PAYMENT_DETAILS = {
 };
 
 const RegisterForm = () => {
+  const router = useRouter();
   const [showForm, setShowForm] = useState(false);
   const [paymentError, setPaymentError] = useState(false);
   const [modalData, setModalData] = useState({ enable: false });
   const [plan, setPlan] = useState({});
   const [membership, setMembership] = useState(false);
-  const router = useRouter();
   const { handleSubmit, control, reset, getValues } = useForm();
 
   const handlePayment = async (userDetails, order) => {
@@ -62,7 +61,7 @@ const RegisterForm = () => {
         order_id: order.orderId,
         key: order.keyId,
         amount: order.amount,
-        handler: paymentSuccess,
+        handler: (response) => paymentSuccess(response, order),
         prefill: {
           name: userDetails.name,
           email: userDetails.email,
@@ -76,13 +75,10 @@ const RegisterForm = () => {
     }
   };
 
-  const paymentSuccess = async (response) => {
-    if (response) {
-      setModalData({
-        enable: true,
-        title: 'Entry Pass',
-        children: <EntryPass />,
-      });
+  const paymentSuccess = async (response, order) => {
+    if (response && order.registrationId) {
+      sessionStorage.setItem('registrationId', order.registrationId);
+      router.push(PAGES_ROUTE.PAYMENT_SUCCESS);
     }
   };
 
