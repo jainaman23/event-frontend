@@ -41,13 +41,9 @@ a:hover{color: #bb3d40;}
 }
 
 .btn-secondary:hover {
-
-    background: #b07000;
-
-    border-color: #b07000;
-
+    background: #c31f36;
+    border-color: #c31f36;
     color: #fff;
-
 }
 
 .btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle {

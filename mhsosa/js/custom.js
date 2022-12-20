@@ -11,6 +11,7 @@ $(document).ready(function(){
         margin:0,
         autoHeight: true,
         nav:false,
+		autoplayTimeout: 6000,
         dots:true,   
         autoplay:true,         
         responsive:{

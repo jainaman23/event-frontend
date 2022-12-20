@@ -1,6 +1,9 @@
 body{background: #fff;}
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+}
 .header_sec_top {
-    background: #2b81be;
+    background: #1481b9;
     padding: 7px 0;
     color: #fff;
     font-size: 14px;
@@ -214,7 +217,7 @@ main{overflow: hidden;}
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    padding: 110px 0;
+    padding: 80px 0;
     color: #fff;
 }
 .st_6 {
@@ -485,6 +488,12 @@ background: linear-gradient(90deg, rgba(50,160,73,1) 0%, rgba(50,160,73,0.865983
     height: 100%;
     display: inline-block;
     z-index: 1;
+}
+
+.fee-class p {
+	font-size: ;
+	font-weight: 600;
+	margin-bottom: 5px;
 }
 
 @media(max-width: 991px){
