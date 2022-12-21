@@ -195,6 +195,9 @@ theme = createTheme(theme, {
           marginLeft: 'auto',
           marginRight: 'auto',
         },
+        item: {
+          whiteSpace: 'break-spaces',
+        },
       },
     },
     MuiAvatar: {

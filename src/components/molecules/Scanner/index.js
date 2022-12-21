@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { QrReader } from 'react-qr-reader';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
@@ -8,9 +8,11 @@ import Button from '@mui/lab/LoadingButton';
 import makeRequestWith from '../../../utils/apiService/client';
 import CandidateDetails from '@molecules/CandidateDetails';
 import { ROUTES } from '@constants';
+import styles from './styles';
 
 const LoginForm = ({ submitHandler }) => {
   const [userData, setUserData] = useState({});
+  const [isRecording, setIsRecording] = useState(true);
   const [successMessage, setSuccessMessage] = useState('');
 
   const onSubmit = async (registrationId) => {
@@ -35,6 +37,24 @@ const LoginForm = ({ submitHandler }) => {
     }
   }, []);
 
+  useEffect(() => {
+    if (Object.keys(userData).length !== 0) {
+      setIsRecording(false);
+      closeCam();
+    }
+  }, [userData]);
+
+  const closeCam = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: false,
+      video: true,
+    });
+    stream.getTracks().forEach(function (track) {
+      track.stop();
+      track.enabled = false;
+    });
+  };
+
   const handleClick = () => {
     window.location.reload();
   };
@@ -49,7 +69,7 @@ const LoginForm = ({ submitHandler }) => {
           </Alert>
         </Box>
       )}
-      {Object.keys(userData).length !== 0 ? (
+      {!isRecording ? (
         <Box sx={{ mb: 1 }}>
           <CandidateDetails details={{ candidate: userData }} />
           {!userData.isAttended && (
@@ -64,21 +84,28 @@ const LoginForm = ({ submitHandler }) => {
           )}
         </Box>
       ) : (
-        <Box sx={{ borderRadius: '20px' }}>
-          <QrReader
-            constraints={{ facingMode: 'environment' }}
-            onResult={(result, error) => {
-              if (result) {
-                onSubmit(result?.text);
-              }
+        <Box sx={{ position: 'relative', mb: 2 }}>
+          <Box sx={{ p: 2 }}>
+            <QrReader
+              constraints={{ facingMode: 'environment' }}
+              onResult={(result) => {
+                if (result) {
+                  onSubmit(result?.text);
+                }
 
-              if (error) {
-                // eslint-disable-next-line no-console
-                console.info(error);
-              }
-            }}
-            style={{ width: '100%' }}
-          />
+                // if (error) {
+                //   // eslint-disable-next-line no-console
+                //   console.error(error.toString());
+                // }
+              }}
+              style={{ width: '100%', padding: '30px' }}
+            />
+          </Box>
+          <Box sx={{ borderRadius: '20px', ...styles.ocrloader }}>
+            <span></span>
+            <p>Scanning</p>
+            <em></em>
+          </Box>
         </Box>
       )}
       <Button variant="contained" color="primary" onClick={handleClick}>

@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import Container from '@atoms/GridContainer';
 import Item from '@components/atoms/GridItem';
 import QRCode from 'react-qr-code';
+import Image from 'next/image';
 
 export default function PaymentSuccess() {
   const registrationId = sessionStorage.getItem('registrationId');
@@ -40,6 +41,9 @@ export default function PaymentSuccess() {
     >
       <Container rowSpacing={{ xs: 2 }} flexDirection="column" alignItems="center">
         <Item>
+          <Image src="https://mhsosa.in/img/logo.png" width={100} height={100} alt="" />
+        </Item>
+        <Item>
           <Typography variant="h2">Thankyou</Typography>
         </Item>
         <Item>
@@ -47,8 +51,10 @@ export default function PaymentSuccess() {
         </Item>
         <Item>
           <Typography>
-            {`Download your entry QR code and don't share it to anyone. It will work only for single
-            entry.`}
+            {
+              // eslint-disable-next-line quotes
+              "Download your entry QR code and don't share it to anyone. It will work only for single entry."
+            }
           </Typography>
         </Item>
         {registrationId && (

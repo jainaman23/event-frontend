@@ -23,7 +23,7 @@ const nextConfig = {
   reactStrictMode: DEV_ENV,
   poweredByHeader: false,
   images: {
-    domains: ['localhost'],
+    domains: ['localhost', 'mhsosa.in'],
   },
   i18n,
   webpack: (config, { isServer }) => {
