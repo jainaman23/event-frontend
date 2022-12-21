@@ -1,44 +1,44 @@
-import React, { useEffect, useState } from "react";
-import Script from "next/script";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
-import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
-import Checkbox from "@mui/material/Checkbox";
-import FormHelperText from "@mui/material/FormHelperText";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Divider from "@mui/material/Divider";
-import Paper from "@mui/material/Paper";
-import Select from "@mui/material/Select";
-import TextField from "@mui/material/TextField";
-import Container from "@components/atoms/GridContainer";
-import Item from "@components/atoms/GridItem";
-import { useForm, Controller } from "react-hook-form";
-import { EMAIL_PATTERN } from "@constants/regex";
-import makeRequestWith from "@utils/apiService/client";
-import { PAGES_ROUTE, ROUTES } from "@constants";
-import { useRouter } from "next/router";
-import { formattedAmount } from "@services/global";
-import COLORS from "@theme/colors";
-import PAYMENT_MERCHENT_SCRIPT from "@constants/global";
-import ModalWithBlurredBg from "@organisms/Modal";
-import NextImage from "next/image";
+import React, { useEffect, useState } from 'react';
+import Script from 'next/script';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Checkbox from '@mui/material/Checkbox';
+import FormHelperText from '@mui/material/FormHelperText';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Divider from '@mui/material/Divider';
+import Paper from '@mui/material/Paper';
+import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
+import Container from '@components/atoms/GridContainer';
+import Item from '@components/atoms/GridItem';
+import { useForm, Controller } from 'react-hook-form';
+import { EMAIL_PATTERN } from '@constants/regex';
+import makeRequestWith from '@utils/apiService/client';
+import { PAGES_ROUTE, ROUTES } from '@constants';
+import { useRouter } from 'next/router';
+import { formattedAmount } from '@services/global';
+import COLORS from '@theme/colors';
+import PAYMENT_MERCHENT_SCRIPT from '@constants/global';
+import ModalWithBlurredBg from '@organisms/Modal';
+import NextImage from 'next/image';
 
 const BATCH = Array(63)
   .fill()
   .map((element, index) => index + 1960);
 
 const PAYMENT_DETAILS = {
-  name: "Event",
-  description: "Alumni",
+  name: 'Event',
+  description: 'Alumni',
   callback_url: `http://${window.location.host}`,
   notes: {
-    address: "Razorpay Corporate Office",
+    address: 'Razorpay Corporate Office',
   },
   theme: {
     color: COLORS.primary.main,
@@ -71,14 +71,14 @@ const RegisterForm = () => {
       };
       // eslint-disable-next-line no-undef
       var rzp1 = new Razorpay(options);
-      rzp1.on("payment.failed", paymentFailure);
+      rzp1.on('payment.failed', paymentFailure);
       rzp1.open();
     }
   };
 
   const paymentSuccess = async (response, order) => {
     if (response && order.registrationId) {
-      sessionStorage.setItem("registrationId", order.registrationId);
+      sessionStorage.setItem('registrationId', order.registrationId);
       router.push(PAGES_ROUTE.PAYMENT_SUCCESS);
     }
   };
@@ -90,7 +90,7 @@ const RegisterForm = () => {
   const onSubmitRegistration = async (data) => {
     setPaymentError(false);
     const result = await makeRequestWith({
-      method: "POST",
+      method: 'POST',
       url: ROUTES.REGISTER,
       notification: false,
       data: {
@@ -98,7 +98,7 @@ const RegisterForm = () => {
         email: data.email,
         batch: data.batch,
         mobileNumber: data.mobileNumber,
-        countryCode: "91",
+        countryCode: '91',
         joinMembership: data.joinMembership ?? false,
       },
     });
@@ -110,9 +110,9 @@ const RegisterForm = () => {
 
   const onSubmitVerification = async ({ mobileNumber }) => {
     const result = await makeRequestWith({
-      method: "POST",
+      method: 'POST',
       url: ROUTES.VERIFY,
-      data: { countryCode: "91", mobileNumber },
+      data: { countryCode: '91', mobileNumber },
       notification: false,
     });
 
@@ -137,9 +137,7 @@ const RegisterForm = () => {
       });
 
       if (response?.plans) {
-        setPlan(
-          response.plans.reduce((acc, itm) => ({ ...acc, [itm.type]: itm }), {})
-        );
+        setPlan(response.plans.reduce((acc, itm) => ({ ...acc, [itm.type]: itm }), {}));
       }
     }
 
@@ -159,7 +157,7 @@ const RegisterForm = () => {
 
   const handleEventEmail = async () => {
     const result = await makeRequestWith({
-      method: "POST",
+      method: 'POST',
       url: ROUTES.SENT_EMAIL,
       data: { registrationId: formData.registrationId },
     });
@@ -181,10 +179,7 @@ const RegisterForm = () => {
         </Box>
       )}
       {formData.isRegistered && (
-        <Box
-          component={Paper}
-          sx={{ mb: 2, ".MuiAlert-action": { alignItems: "center" } }}
-        >
+        <Box component={Paper} sx={{ mb: 2, '.MuiAlert-action': { alignItems: 'center' } }}>
           <Alert
             severity="info"
             action={
@@ -208,8 +203,8 @@ const RegisterForm = () => {
         <Box component={Paper} sx={{ mb: 2 }}>
           <Alert severity="info">
             <AlertTitle>Membership Status</AlertTitle>
-            You are already a lifetime member — To register for an event, fill
-            the below form and proceed with the registration.
+            You are already a lifetime member — To register for an event, fill the below form and
+            proceed with the registration.
           </Alert>
         </Box>
       )}
@@ -218,26 +213,23 @@ const RegisterForm = () => {
           <Alert severity="info">
             <AlertTitle>Membership Status</AlertTitle>
             <p>
-              You are not a lifetime member — To register for an event, fill the
-              below form and proceed with the registration.
+              You are not a lifetime member — To register for an event, fill the below form and
+              proceed with the registration.
             </p>
             <p>
-              If you have any query please{" "}
-              <a href="https://wa.me/+919460706000">Click here to contact</a> on
-              Whatsapp.
+              If you have any query please{' '}
+              <a href="https://wa.me/+919460706000">Click here to contact</a> on Whatsapp.
             </p>
           </Alert>
         </Box>
       )}
       <Box component={Paper} sx={{ p: 4 }}>
         <Container justifyContent="center">
+          <Item>
+            <NextImage src="https://mhsosa.in/img/logo.png" width={100} height={100} alt="" />
+          </Item>
           <Item xs={12}>
-            <NextImage
-              src="https://mhsosa.in/img/logo.png"
-              width={100}
-              height={100}
-              alt=""
-            />
+            <NextImage src="https://mhsosa.in/img/logo.png" width={100} height={100} alt="" />
           </Item>
           <Item xs={12}>
             <Typography variant="h2" sx={{ mb: 2 }}>
@@ -247,9 +239,8 @@ const RegisterForm = () => {
           {!showForm && (
             <Item xs={12}>
               <Typography sx={{ mb: 2 }}>
-                यदि आपने lifetime membership ले रखी है तो कृपया अपना रजिस्टर्ड
-                फोन नंबर डाले अन्यथा अपना फोन नंबर डाल कर रजिस्ट्रेशन प्रोसेस
-                में आगे बढ़े।
+                यदि आपने lifetime membership ले रखी है तो कृपया अपना रजिस्टर्ड फोन नंबर डाले अन्यथा
+                अपना फोन नंबर डाल कर रजिस्ट्रेशन प्रोसेस में आगे बढ़े।
               </Typography>
             </Item>
           )}
@@ -261,11 +252,11 @@ const RegisterForm = () => {
               rules={{
                 required: {
                   value: true,
-                  message: "Required",
+                  message: 'Required',
                 },
                 pattern: {
                   value: /^\d{10}$/,
-                  message: "Incorrect Value",
+                  message: 'Incorrect Value',
                 },
               }}
               render={({ field, fieldState: { error } }) => {
@@ -292,7 +283,7 @@ const RegisterForm = () => {
                     control={control}
                     defaultValue=""
                     rules={{
-                      required: { value: true, message: "Required" },
+                      required: { value: true, message: 'Required' },
                     }}
                     render={({ field, fieldState: { error } }) => {
                       return (
@@ -313,9 +304,9 @@ const RegisterForm = () => {
                     control={control}
                     defaultValue=""
                     rules={{
-                      required: { value: true, message: "Required" },
+                      required: { value: true, message: 'Required' },
                       pattern: {
-                        message: "Incorrect email address",
+                        message: 'Incorrect email address',
                         value: EMAIL_PATTERN,
                       },
                     }}
@@ -334,17 +325,12 @@ const RegisterForm = () => {
                 <Item xs={12}>
                   <Controller
                     name="batch"
-                    defaultValue={""}
+                    defaultValue={''}
                     control={control}
-                    rules={{ required: "Required" }}
+                    rules={{ required: 'Required' }}
                     render={({ field, fieldState: { error } }) => (
-                      <FormControl
-                        error={Boolean(error)}
-                        disabled={formData.isMember}
-                      >
-                        <InputLabel id="demo-simple-select-error-label">
-                          Batch
-                        </InputLabel>
+                      <FormControl error={Boolean(error)} disabled={formData.isMember}>
+                        <InputLabel id="demo-simple-select-error-label">Batch</InputLabel>
                         <Select {...field} label="Batch">
                           <MenuItem value="">
                             <em>None</em>
@@ -357,9 +343,7 @@ const RegisterForm = () => {
                             );
                           })}
                         </Select>
-                        {Boolean(error) && (
-                          <FormHelperText>Required</FormHelperText>
-                        )}
+                        {Boolean(error) && <FormHelperText>Required</FormHelperText>}
                       </FormControl>
                     )}
                   />
@@ -371,8 +355,7 @@ const RegisterForm = () => {
                   </Typography>
                   {formData.isMember ? (
                     <Typography>
-                      You are a lifetime member. Please continue to pay the
-                      amount
+                      You are a lifetime member. Please continue to pay the amount
                     </Typography>
                   ) : (
                     <Box>
@@ -383,9 +366,9 @@ const RegisterForm = () => {
                         render={({ field }) => (
                           <Box
                             sx={{
-                              display: "flex",
-                              alignItems: "center",
-                              whiteSpace: "break-spaces",
+                              display: 'flex',
+                              alignItems: 'center',
+                              whiteSpace: 'break-spaces',
                             }}
                           >
                             <FormGroup {...field}>
@@ -401,19 +384,15 @@ const RegisterForm = () => {
                                   />
                                 }
                                 label={`Join with Lifetime Membership (${formattedAmount(
-                                  plan["MEMBERSHIP"]?.amount -
-                                    plan["MEMBER"]?.amount,
+                                  plan['MEMBERSHIP']?.amount - plan['MEMBER']?.amount,
                                   {
-                                    currency: "INR",
-                                  }
-                                )}) + Event Entry (${formattedAmount(plan["MEMBER"]?.amount, {
-                                  currency: "INR",
-                                })}) in ${formattedAmount(
-                                  plan["MEMBERSHIP"]?.amount,
-                                  {
-                                    currency: "INR",
-                                  }
-                                )} only`}
+                                    currency: 'INR',
+                                  },
+                                )}) + Event Entry (${formattedAmount(plan['MEMBER']?.amount, {
+                                  currency: 'INR',
+                                })}) in ${formattedAmount(plan['MEMBERSHIP']?.amount, {
+                                  currency: 'INR',
+                                })} only`}
                               />
                             </FormGroup>
                           </Box>
@@ -433,22 +412,19 @@ const RegisterForm = () => {
                 <>
                   {formData.isMember ? (
                     <Button variant="contained" color="primary" type="submit">
-                      {`Proceed To Continue (${formattedAmount(
-                        plan["MEMBER"].amount,
-                        {
-                          currency: "INR",
-                        }
-                      )})`}
+                      {`Proceed To Continue (${formattedAmount(plan['MEMBER'].amount, {
+                        currency: 'INR',
+                      })})`}
                     </Button>
                   ) : (
                     <Button variant="contained" color="primary" type="submit">
                       {`Proceed & Pay(${formattedAmount(
                         formData.joinMembership
-                          ? plan["MEMBERSHIP"].amount
-                          : plan["NON_MEMBER"].amount,
+                          ? plan['MEMBERSHIP'].amount
+                          : plan['NON_MEMBER'].amount,
                         {
-                          currency: "INR",
-                        }
+                          currency: 'INR',
+                        },
                       )})`}
                     </Button>
                   )}
@@ -469,9 +445,8 @@ const RegisterForm = () => {
             )}
           </Item>
           <Item>
-            <b>Note: </b>If you have any query please{" "}
-            <a href="https://wa.me/+919460706000">Click here to contact</a> on
-            Whatsapp.
+            <b>Note: </b>If you have any query please{' '}
+            <a href="https://wa.me/+919460706000">Click here to contact</a> on Whatsapp.
           </Item>
         </Container>
       </Box>
