@@ -38,6 +38,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 const AppBar = styled(TopHeaderBar)(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
+  justifyContent: 'center',
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,

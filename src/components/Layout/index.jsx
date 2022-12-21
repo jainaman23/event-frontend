@@ -21,7 +21,7 @@ function Layout({ children, hideFooter = false, ...props }) {
 
   return (
     <>
-      <Header {...props} sx={{ mb: 2, textAlign: 'center' }}>
+      <Header {...props} sx={{ mb: 2 }}>
         {children}
       </Header>
       {!hideFooter && (

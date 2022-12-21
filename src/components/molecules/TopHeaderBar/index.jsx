@@ -20,8 +20,8 @@ const TopBar = ({ label, navigate, open, handleDrawerOpen, ...props }) => {
     <AppBar position="fixed" open={open} {...props}>
       <Toolbar>
         <Container sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-          <Item>
-            <Container sx={{ alignItems: 'center' }}>
+          <Item xs={12}>
+            <Container sx={{ alignItems: 'center', justifyContent: 'center' }}>
               <IconButton
                 size="large"
                 edge="start"
