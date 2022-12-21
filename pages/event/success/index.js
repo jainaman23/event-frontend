@@ -8,7 +8,7 @@ const PaymentSuccess = dynamic(() => import('@molecules/PaymentSuccess'), {
 
 export default function UserQR(props) {
   return (
-    <Layout label="Entry Pass">
+    <Layout label="Thank you, your payment successfully completed">
       <PaymentSuccess {...props} />
     </Layout>
   );

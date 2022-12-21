@@ -12,7 +12,6 @@ const COLORS = {
     main: '#27251f',
     light: '#CFE3FA',
   },
-  grey: 'hsl(189, 41%, 97%)',
   divider: '#F4F4F4',
   success: {
     main: '#00C333',

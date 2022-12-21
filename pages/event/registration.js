@@ -8,7 +8,7 @@ const RegistartionForm = dynamic(() => import('@components/organisms/Registratio
 
 export default function Registration(props) {
   return (
-    <Layout label="Registration">
+    <Layout label={`Registration for MHS 2nd Alumni Meet on 08 Jan 2023, Sunday`}>
       <RegistartionForm {...props} />
     </Layout>
   );
