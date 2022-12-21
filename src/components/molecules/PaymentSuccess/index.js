@@ -18,7 +18,6 @@ export default function PaymentSuccess() {
       .then(function (dataUrl) {
         const img = new Image();
         img.src = dataUrl;
-        document.body.appendChild(img);
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         img.onload = () => {
@@ -61,7 +60,7 @@ export default function PaymentSuccess() {
             <Item>
               <Box component={Paper} sx={{ p: 2, border: '5px solid #2b81be' }} id="QRCode">
                 <Item>
-                  <NextImage src="https://mhsosa.in/img/logo.png" width={100} height={100} alt="" />
+                  <NextImage src="https://mhsosa.in/img/logo.png" width={108} height={106} alt="" />
                 </Item>
                 <Box sx={{ m: 2 }}>
                   <QRCode

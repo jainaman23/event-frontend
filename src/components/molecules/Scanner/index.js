@@ -13,7 +13,7 @@ import styles from './styles';
 const LoginForm = ({ submitHandler }) => {
   const [userData, setUserData] = useState({});
   const [isRecording, setIsRecording] = useState(true);
-  const [successMessage, setSuccessMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState({ type: '', message: '' });
   const ref = useRef(null);
 
   const onSubmit = async (registrationId) => {
@@ -24,7 +24,7 @@ const LoginForm = ({ submitHandler }) => {
       setUserData(result.user);
 
       if (result.user?.isAttended) {
-        setSuccessMessage('Already Attended the event');
+        setSuccessMessage({ type: 'error', message: 'Already Attended the event' });
       }
     }
   };
@@ -37,7 +37,8 @@ const LoginForm = ({ submitHandler }) => {
     });
 
     if (result && result.user) {
-      setSuccessMessage('Member verified successfully');
+      setSuccessMessage({ type: 'success', message: 'Member verified successfully' });
+      window.location.href = '/event/verification';
     }
   }, []);
 
@@ -65,11 +66,11 @@ const LoginForm = ({ submitHandler }) => {
 
   return (
     <Box sx={{ margin: 'auto', textAlign: 'center' }}>
-      {successMessage && (
+      {successMessage.message && (
         <Box component={Paper} sx={{ mb: 2 }}>
-          <Alert severity="error" sx={{ textAlign: 'left' }}>
+          <Alert severity={successMessage.type} sx={{ textAlign: 'left' }}>
             <AlertTitle>Status</AlertTitle>
-            {successMessage}
+            {successMessage.message}
           </Alert>
         </Box>
       )}

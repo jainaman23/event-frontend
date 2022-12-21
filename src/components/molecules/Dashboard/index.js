@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import Container from '@atoms/GridContainer';
 import Item from '@atoms/GridItem';
 import CreateTable from '@components/molecules/CreateTable';
@@ -14,11 +15,13 @@ const heads = [
   { id: 'name', label: 'Name', minWidth: 150 },
   { id: 'email', label: 'Email', width: 100 },
   { id: 'mobileNumber', label: 'Mobile No', width: 100 },
+  { id: 'paymentStatus', label: 'Payment', width: 100 },
   { id: 'actions', label: 'Actions', minWidth: 150 },
 ];
 
 const Listing = () => {
   const [rows, setRows] = useState([]);
+  const [mobileNumber, setMobileNumber] = useState('');
   const [modalData, setModalData] = useState({ enable: false });
   const router = useRouter();
 
@@ -97,11 +100,19 @@ const Listing = () => {
     router.push(PAGES_ROUTE.VERIFICATION);
   };
 
+  const handleMobileNumber = (e) => {
+    setMobileNumber(e.target.value);
+  };
+
   return (
     <Container>
       <Button onClick={handleQRCode}>Approve QRCode</Button>
-      <Item xs={12}>
-        <CreateTable heads={heads} rows={resultsWithActions} />
+      <TextField label="Search Mobile No." variant="outlined" onChange={handleMobileNumber} />
+      <Item xs={12} sx={{ overflow: 'auto' }}>
+        <CreateTable
+          heads={heads}
+          rows={resultsWithActions.filter((itm) => itm.mobileNumber.startsWith(mobileNumber))}
+        />
       </Item>
       <ModalWithBlurredBg
         {...modalData}

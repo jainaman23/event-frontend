@@ -226,7 +226,7 @@ const RegisterForm = () => {
       <Box component={Paper} sx={{ p: 4 }}>
         <Container justifyContent="center">
           <Item xs={12}>
-            <NextImage src="https://mhsosa.in/img/logo.png" width={100} height={100} alt="" />
+            <NextImage src="https://mhsosa.in/img/logo.png" width={108} height={106} alt="" />
           </Item>
           <Item xs={12}>
             <Typography variant="h2" sx={{ mb: 2 }}>
