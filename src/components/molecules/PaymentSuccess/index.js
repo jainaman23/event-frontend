@@ -7,27 +7,34 @@ import Container from '@atoms/GridContainer';
 import Item from '@components/atoms/GridItem';
 import QRCode from 'react-qr-code';
 import NextImage from 'next/image';
+import { toPng } from 'html-to-image';
 
 export default function PaymentSuccess() {
   const registrationId = sessionStorage.getItem('registrationId');
 
   const handleClick = () => {
     const svg = document.getElementById('QRCode');
-    const svgData = new XMLSerializer().serializeToString(svg);
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    const img = new Image();
-    img.onload = () => {
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-      const pngFile = canvas.toDataURL('image/png');
-      const downloadLink = document.createElement('a');
-      downloadLink.download = 'entry-pass';
-      downloadLink.href = `${pngFile}`;
-      downloadLink.click();
-    };
-    img.src = `data:image/svg+xml;base64,${btoa(svgData)}`;
+    toPng(svg)
+      .then(function (dataUrl) {
+        const img = new Image();
+        img.src = dataUrl;
+        document.body.appendChild(img);
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        img.onload = () => {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+          const pngFile = canvas.toDataURL('image/png');
+          const downloadLink = document.createElement('a');
+          downloadLink.download = 'entry-pass';
+          downloadLink.href = `${pngFile}`;
+          downloadLink.click();
+        };
+      })
+      .catch(function (error) {
+        console.error('oops, something went wrong!', error);
+      });
   };
 
   return (
