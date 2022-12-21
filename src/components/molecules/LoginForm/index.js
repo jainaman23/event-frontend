@@ -17,7 +17,7 @@ import { parseJwt } from '@services/global';
 import { setCookie } from '@services/storage';
 import { ROUTES } from '@constants';
 
-const LoginForm = ({ submitHandler }) => {
+const LoginForm = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const { handleSubmit, control } = useForm();
 

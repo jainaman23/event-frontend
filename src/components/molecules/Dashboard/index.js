@@ -17,7 +17,7 @@ const heads = [
   { id: 'actions', label: 'Actions', minWidth: 150 },
 ];
 
-const EmployeeListing = () => {
+const Listing = () => {
   const [rows, setRows] = useState([]);
   const [modalData, setModalData] = useState({ enable: false });
   const router = useRouter();
@@ -111,4 +111,4 @@ const EmployeeListing = () => {
   );
 };
 
-export default EmployeeListing;
+export default Listing;

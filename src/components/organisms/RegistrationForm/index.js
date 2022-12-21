@@ -91,6 +91,7 @@ const RegisterForm = () => {
     const result = await makeRequestWith({
       method: 'POST',
       url: ROUTES.REGISTER,
+      notification: false,
       data: {
         name: data.name,
         email: data.email,
@@ -111,6 +112,7 @@ const RegisterForm = () => {
       method: 'POST',
       url: ROUTES.VERIFY,
       data: { countryCode: '91', mobileNumber },
+      notification: false,
     });
 
     if (result) {

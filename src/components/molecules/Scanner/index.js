@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { QrReader } from 'react-qr-reader';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
@@ -14,13 +14,17 @@ const LoginForm = ({ submitHandler }) => {
   const [userData, setUserData] = useState({});
   const [isRecording, setIsRecording] = useState(true);
   const [successMessage, setSuccessMessage] = useState('');
+  const ref = useRef(null);
 
   const onSubmit = async (registrationId) => {
-    const result = await makeRequestWith({ url: `${ROUTES.USERS}/${registrationId}` });
+    const result = await makeRequestWith({
+      url: `${ROUTES.USERS}/${registrationId}`,
+    });
     if (result && result.user) {
+      setUserData(result.user);
+
       if (result.user?.isAttended) {
         setSuccessMessage('Already Attended the event');
-        setUserData(result.user);
       }
     }
   };
@@ -51,7 +55,7 @@ const LoginForm = ({ submitHandler }) => {
     });
     stream.getTracks().forEach(function (track) {
       track.stop();
-      track.enabled = false;
+      // track.enabled = false;
     });
   };
 
@@ -89,7 +93,7 @@ const LoginForm = ({ submitHandler }) => {
             <QrReader
               constraints={{ facingMode: 'environment' }}
               onResult={(result) => {
-                if (result) {
+                if (result && Object.keys(userData).length === 0) {
                   onSubmit(result?.text);
                 }
 
@@ -98,6 +102,7 @@ const LoginForm = ({ submitHandler }) => {
                 //   console.error(error.toString());
                 // }
               }}
+              ref={ref}
               style={{ width: '100%', padding: '30px' }}
             />
           </Box>
