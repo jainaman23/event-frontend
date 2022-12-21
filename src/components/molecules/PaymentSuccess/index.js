@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import Container from '@atoms/GridContainer';
 import Item from '@components/atoms/GridItem';
 import QRCode from 'react-qr-code';
-import Image from 'next/image';
+import NextImage from 'next/image';
 
 export default function PaymentSuccess() {
   const registrationId = sessionStorage.getItem('registrationId');
@@ -41,7 +41,7 @@ export default function PaymentSuccess() {
     >
       <Container rowSpacing={{ xs: 2 }} flexDirection="column" alignItems="center">
         <Item>
-          <Image src="https://mhsosa.in/img/logo.png" width={100} height={100} alt="" />
+          <NextImage src="https://mhsosa.in/img/logo.png" width={100} height={100} alt="" />
         </Item>
         <Item>
           <Typography variant="h2">Thankyou</Typography>
