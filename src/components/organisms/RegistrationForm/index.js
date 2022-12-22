@@ -62,7 +62,7 @@ const RegisterForm = () => {
         order_id: order.orderId,
         key: order.keyId,
         amount: order.amount,
-        handler: (response) => paymentSuccess(response, order),
+        handler: (response) => paymentSuccess(response, order, userDetails),
         prefill: {
           name: userDetails.name,
           email: userDetails.email,
@@ -76,9 +76,10 @@ const RegisterForm = () => {
     }
   };
 
-  const paymentSuccess = async (response, order) => {
-    if (response && order.registrationId) {
+  const paymentSuccess = async (response, order, userDetails) => {
+    if (response && order?.registrationId) {
       sessionStorage.setItem('registrationId', order.registrationId);
+      sessionStorage.setItem('registerName', userDetails.name);
       router.push(PAGES_ROUTE.PAYMENT_SUCCESS);
     }
   };
@@ -180,9 +181,10 @@ const RegisterForm = () => {
       )}
       {formData.isRegistered && (
         <Box component={Paper} sx={{ mb: 2, '.MuiAlert-action': { alignItems: 'center' } }}>
-          <Alert
-            severity="info"
-            action={
+          <Alert severity="info">
+            <AlertTitle>Registration Status</AlertTitle>
+            You are already registered for the event
+            <Box sx={{ width: '100%', mt: 1 }}>
               <Button
                 color="inherit"
                 size="small"
@@ -190,12 +192,9 @@ const RegisterForm = () => {
                 onClick={handleEventEmail}
                 sx={{ p: 0.5, m: 0 }}
               >
-                GET PASS
+                GET ENTRY PASS
               </Button>
-            }
-          >
-            <AlertTitle>Registration Status</AlertTitle>
-            You are already registered for the event
+            </Box>
           </Alert>
         </Box>
       )}
@@ -218,7 +217,10 @@ const RegisterForm = () => {
             </p>
             <p>
               If you have any query please{' '}
-              <a href="https://wa.me/+919460706000" target="_blank" rel="noreferrer">Click here to contact</a> on Whatsapp.
+              <a href="https://wa.me/+919460706000" target="_blank" rel="noreferrer">
+                Click here to contact
+              </a>{' '}
+              on Whatsapp.
             </p>
           </Alert>
         </Box>
@@ -443,7 +445,10 @@ const RegisterForm = () => {
           </Item>
           <Item>
             <b>Note: </b>If you have any query please{' '}
-            <a href="https://wa.me/+919460706000" target="_blank" rel="noreferrer">Click here to contact</a> on Whatsapp.
+            <a href="https://wa.me/+919460706000" target="_blank" rel="noreferrer">
+              Click here to contact
+            </a>{' '}
+            on Whatsapp.
           </Item>
         </Container>
       </Box>

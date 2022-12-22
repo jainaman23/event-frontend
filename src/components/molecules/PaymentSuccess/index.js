@@ -11,6 +11,7 @@ import { toPng } from 'html-to-image';
 
 export default function PaymentSuccess() {
   const registrationId = sessionStorage.getItem('registrationId');
+  const registerName = sessionStorage.getItem('registerName');
 
   const handleClick = () => {
     const svg = document.getElementById('QRCode');
@@ -70,7 +71,8 @@ export default function PaymentSuccess() {
                   />
                 </Box>
                 <Item>
-                  <Typography variant="h6">2nd Alumni Meet</Typography>
+                  <Typography variant="h6" sx={{mb:1, fontWeight: 'bold'}}>{registerName}</Typography>
+                  <Typography variant="h6" sx={{fontWeight: 'bold'}}>2nd Alumni Meet</Typography>
                   <Typography sx={{ fontWeight: 500 }}>8 Jan 2023, Sunday</Typography>
                   <Typography sx={{ fontWeight: 500 }}>4:30 PM Onwards</Typography>
                   <Typography sx={{ fontWeight: 500 }}>MHS School, Tilak Nagar, Jaipur</Typography>

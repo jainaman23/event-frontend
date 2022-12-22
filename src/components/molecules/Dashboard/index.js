@@ -12,10 +12,17 @@ import ConfirmDialog from '@components/molecules/ConfirmDialog';
 import { PAGES_ROUTE, ROUTES } from '@constants/routes';
 
 const heads = [
+  { id: 'srNo', label: 'Sr No', minWidth: 15 },
   { id: 'name', label: 'Name', minWidth: 150 },
   { id: 'email', label: 'Email', width: 100 },
   { id: 'mobileNumber', label: 'Mobile No', width: 100 },
   { id: 'paymentStatus', label: 'Payment', width: 100 },
+  {
+    label: 'Entry Time',
+    minWidth: 150,
+    format: (itm) =>
+      itm.isAttended ? new Date(itm.updatedAt).toLocaleTimeString('en-US', { hour12: true }) : '',
+  },
   { id: 'actions', label: 'Actions', minWidth: 150 },
 ];
 
@@ -36,8 +43,10 @@ const Listing = () => {
       if (result && result.user) {
         setModalData({ enable: false });
         setRows(
-          rows.map((itm) => {
+          rows.map((itm, index) => {
+            itm.srNo = index + 1;
             if (itm._id === result.user._id) {
+              result.user.srNo = index + 1;
               return result.user;
             }
             return itm;
@@ -65,8 +74,9 @@ const Listing = () => {
     [handleApprove],
   );
 
-  const resultsWithActions = rows.map((itm) => {
+  const resultsWithActions = rows.map((itm, index) => {
     const item = itm;
+    item.srNo = index + 1;
     item.actions = [];
 
     item.actions.push(

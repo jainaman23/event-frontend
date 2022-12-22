@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const PRIVATE_ROUTES = ['/event/dashboard', '/event/verification'];
+const PRIVATE_ROUTES = ['/dashboard', '/verification'];
 
 export function middleware(request) {
   const token = request.cookies.get('token');
