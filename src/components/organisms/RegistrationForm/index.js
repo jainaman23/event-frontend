@@ -218,7 +218,7 @@ const RegisterForm = () => {
             </p>
             <p>
               If you have any query please{' '}
-              <a href="https://wa.me/+919460706000">Click here to contact</a> on Whatsapp.
+              <a href="https://wa.me/+919460706000" target="_blank" rel="noreferrer">Click here to contact</a> on Whatsapp.
             </p>
           </Alert>
         </Box>
@@ -443,7 +443,7 @@ const RegisterForm = () => {
           </Item>
           <Item>
             <b>Note: </b>If you have any query please{' '}
-            <a href="https://wa.me/+919460706000">Click here to contact</a> on Whatsapp.
+            <a href="https://wa.me/+919460706000" target="_blank" rel="noreferrer">Click here to contact</a> on Whatsapp.
           </Item>
         </Container>
       </Box>
