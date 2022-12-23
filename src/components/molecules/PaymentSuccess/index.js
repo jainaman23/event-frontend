@@ -74,7 +74,7 @@ export default function PaymentSuccess() {
                   <Typography variant="h6" sx={{mb:1, fontWeight: 'bold'}}>{registerName}</Typography>
                   <Typography variant="h6" sx={{fontWeight: 'bold'}}>2nd Alumni Meet</Typography>
                   <Typography sx={{ fontWeight: 500 }}>8 Jan 2023, Sunday</Typography>
-                  <Typography sx={{ fontWeight: 500 }}>4:30 PM Onwards</Typography>
+                  <Typography sx={{ fontWeight: 500 }}>5:00 PM Onwards</Typography>
                   <Typography sx={{ fontWeight: 500 }}>MHS School, Tilak Nagar, Jaipur</Typography>
                 </Item>
               </Box>
