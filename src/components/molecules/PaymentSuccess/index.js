@@ -2,12 +2,10 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
 import Container from '@atoms/GridContainer';
 import Item from '@components/atoms/GridItem';
-import QRCode from 'react-qr-code';
-import NextImage from 'next/image';
 import { toPng } from 'html-to-image';
+import EntryPass from '../EntryPass';
 
 export default function PaymentSuccess() {
   const registrationId = sessionStorage.getItem('registrationId');
@@ -59,25 +57,7 @@ export default function PaymentSuccess() {
         {registrationId && (
           <>
             <Item>
-              <Box component={Paper} sx={{ p: 2, border: '5px solid #2b81be' }} id="QRCode">
-                <Item>
-                  <NextImage src="https://mhsosa.in/img/logo.png" width={108} height={106} alt="" />
-                </Item>
-                <Box sx={{ m: 2 }}>
-                  <QRCode
-                    // id="QRCode"
-                    title="Entry Pass"
-                    value={registrationId}
-                  />
-                </Box>
-                <Item>
-                  <Typography variant="h6" sx={{mb:1, fontWeight: 'bold'}}>{registerName}</Typography>
-                  <Typography variant="h6" sx={{fontWeight: 'bold'}}>2nd Alumni Meet</Typography>
-                  <Typography sx={{ fontWeight: 500 }}>8 Jan 2023, Sunday</Typography>
-                  <Typography sx={{ fontWeight: 500 }}>5:00 PM Onwards</Typography>
-                  <Typography sx={{ fontWeight: 500 }}>MHS School, Tilak Nagar, Jaipur</Typography>
-                </Item>
-              </Box>
+              <EntryPass registerName={registerName} registrationId={registrationId} />
             </Item>
             <Item>
               <Button onClick={handleClick}>Download Ticket</Button>

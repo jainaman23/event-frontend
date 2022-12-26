@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Container from '@atoms/GridContainer';
@@ -10,6 +11,8 @@ import TableBtn from '@atoms/TableActionButton';
 import ModalWithBlurredBg from '@organisms/Modal';
 import ConfirmDialog from '@components/molecules/ConfirmDialog';
 import { PAGES_ROUTE, ROUTES } from '@constants/routes';
+import EntryPass from '../EntryPass';
+import { toPng } from 'html-to-image';
 
 const heads = [
   { id: 'srNo', label: 'Sr No', minWidth: 15 },
@@ -74,6 +77,56 @@ const Listing = () => {
     [handleApprove],
   );
 
+  const handleDownloadClick = () => {
+    const svg = document.getElementById('QRCode');
+    toPng(svg)
+      .then(function (dataUrl) {
+        const img = new Image();
+        img.src = dataUrl;
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        img.onload = () => {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+          const pngFile = canvas.toDataURL('image/png');
+          const downloadLink = document.createElement('a');
+          downloadLink.download = 'entry-pass';
+          downloadLink.href = `${pngFile}`;
+          downloadLink.click();
+        };
+      })
+      .catch(function (error) {
+        console.error('oops, something went wrong!', error);
+      });
+  };
+
+  const handleShowCode = React.useCallback(async (data) => {
+    setModalData({
+      enable: true,
+      title: 'Entry Pass',
+      children: (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+          }}
+        >
+          <Container rowSpacing={{ xs: 2 }} flexDirection="column" alignItems="center">
+            <Item>
+              <EntryPass registerName={data.name} registrationId={data._id} />
+            </Item>
+            <Item>
+              <Button onClick={handleDownloadClick}>Download Ticket</Button>
+            </Item>
+          </Container>
+        </Box>
+      ),
+    });
+  }, []);
+
   const resultsWithActions = rows.map((itm, index) => {
     const item = itm;
     item.srNo = index + 1;
@@ -86,6 +139,12 @@ const Listing = () => {
         disabled={item.isAttended}
       >
         {item.isAttended ? 'APPROVED' : 'APPROVE'}
+      </TableBtn>,
+    );
+
+    item.actions.push(
+      <TableBtn onClick={() => handleShowCode(item)} key={`qr-${item._id}`}>
+        QRCode
       </TableBtn>,
     );
 
