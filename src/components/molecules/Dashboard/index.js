@@ -16,10 +16,11 @@ import { toPng } from 'html-to-image';
 
 const heads = [
   { id: 'srNo', label: 'Sr No', minWidth: 15 },
-  { id: 'name', label: 'Name', minWidth: 150 },
-  { id: 'email', label: 'Email', width: 100 },
-  { id: 'mobileNumber', label: 'Mobile No', width: 100 },
-  { id: 'paymentStatus', label: 'Payment', width: 100 },
+  { id: 'name', label: 'Name', minWidth: 15 },
+  { id: 'email', label: 'Email', width: 10 },
+  { id: 'mobileNumber', label: 'Mobile No', width: 10 },
+  { id: 'batch', label: 'Batch', width: 10 },
+  { id: 'paymentStatus', label: 'Payment', width: 10 },
   {
     label: 'Entry Time',
     minWidth: 150,

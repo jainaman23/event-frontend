@@ -90,8 +90,8 @@ const ModalWithBlurredBg = React.forwardRef(
                   </IconButton>
                 </Item>
               )}
+              <Divider sx={{ mb: 2 }} />
             </Container>
-            <Divider sx={{ mb: 2 }} />
             {description && (
               <Item xs={12} sx={{ mt: 2 }}>
                 <Typography variant="body2">{description}</Typography>

@@ -28,6 +28,8 @@ import COLORS from '@theme/colors';
 import PAYMENT_MERCHENT_SCRIPT from '@constants/global';
 import ModalWithBlurredBg from '@organisms/Modal';
 import NextImage from 'next/image';
+import ConfirmDialog from '@components/molecules/ConfirmDialog';
+import RegistrationClosed from '@components/molecules/RegistrationClosed';
 
 const BATCH = Array(63)
   .fill()
@@ -48,6 +50,7 @@ const PAYMENT_DETAILS = {
 const RegisterForm = () => {
   const router = useRouter();
   const [showForm, setShowForm] = useState(false);
+  const [isRegistrationClosed, setRegistrationClosed] = useState(false);
   const [paymentError, setPaymentError] = useState(false);
   const [modalData, setModalData] = useState({ enable: false });
   const [plan, setPlan] = useState({});
@@ -132,6 +135,17 @@ const RegisterForm = () => {
   };
 
   useEffect(() => {
+    if (new Date().getTime() > new Date('2023-01-01T00:00:00.817Z').getTime()) {
+      setRegistrationClosed(true);
+      setModalData({
+        enable: true,
+        close: false,
+        children: <RegistrationClosed />,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
     async function fetchPlan() {
       const response = await makeRequestWith({
         url: ROUTES.PLAN,
@@ -148,11 +162,13 @@ const RegisterForm = () => {
   const formData = getValues();
 
   const handleFormSubmit = (e) => {
-    e.preventDefault();
-    if (showForm) {
-      return handleSubmit(onSubmitRegistration)();
-    } else {
-      return handleSubmit(onSubmitVerification)();
+    if (!isRegistrationClosed) {
+      e.preventDefault();
+      if (showForm) {
+        return handleSubmit(onSubmitRegistration)();
+      } else {
+        return handleSubmit(onSubmitVerification)();
+      }
     }
   };
 
@@ -402,35 +418,37 @@ const RegisterForm = () => {
                 </Box>
               </>
             ) : null}
-            <Item xs={12}>
-              {!showForm ? (
-                <Button variant="contained" color="primary" type="submit">
-                  Next
-                </Button>
-              ) : (
-                <>
-                  {formData.isMember ? (
-                    <Button variant="contained" color="primary" type="submit">
-                      {`Proceed To Continue (${formattedAmount(plan['MEMBER'].amount, {
-                        currency: 'INR',
-                      })})`}
-                    </Button>
-                  ) : (
-                    <Button variant="contained" color="primary" type="submit">
-                      {`Proceed & Pay(${formattedAmount(
-                        formData.joinMembership
-                          ? plan['MEMBERSHIP'].amount
-                          : plan['NON_MEMBER'].amount,
-                        {
+            {!isRegistrationClosed && (
+              <Item xs={12}>
+                {!showForm ? (
+                  <Button variant="contained" color="primary" type="submit">
+                    Next
+                  </Button>
+                ) : (
+                  <>
+                    {formData.isMember ? (
+                      <Button variant="contained" color="primary" type="submit">
+                        {`Proceed To Continue (${formattedAmount(plan['MEMBER'].amount, {
                           currency: 'INR',
-                        },
-                      )})`}
-                    </Button>
-                  )}
-                </>
-              )}
-            </Item>
-            {showForm && (
+                        })})`}
+                      </Button>
+                    ) : (
+                      <Button variant="contained" color="primary" type="submit">
+                        {`Proceed & Pay(${formattedAmount(
+                          formData.joinMembership
+                            ? plan['MEMBERSHIP'].amount
+                            : plan['NON_MEMBER'].amount,
+                          {
+                            currency: 'INR',
+                          },
+                        )})`}
+                      </Button>
+                    )}
+                  </>
+                )}
+              </Item>
+            )}
+            {showForm && !isRegistrationClosed && (
               <Item xs={12}>
                 <Button
                   variant="contained"
