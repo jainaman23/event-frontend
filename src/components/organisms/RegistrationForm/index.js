@@ -28,7 +28,6 @@ import COLORS from '@theme/colors';
 import PAYMENT_MERCHENT_SCRIPT from '@constants/global';
 import ModalWithBlurredBg from '@organisms/Modal';
 import NextImage from 'next/image';
-import ConfirmDialog from '@components/molecules/ConfirmDialog';
 import RegistrationClosed from '@components/molecules/RegistrationClosed';
 
 const BATCH = Array(63)
@@ -279,12 +278,11 @@ const RegisterForm = () => {
                     disabled={showForm}
                     error={Boolean(error)}
                     label="Mobile Number"
+                    autoComplete="off"
                     helperText={
                       error?.message ??
                       '10 डिजिट का मोबाइल नंबर डाले, "+91", "0" या country कोड नहीं डाले '
                     }
-                    autoComplete='off'
-                    sx={{}}
                   />
                 );
               }}
@@ -305,9 +303,9 @@ const RegisterForm = () => {
                           {...field}
                           error={Boolean(error)}
                           label="Name"
+                          autoComplete="off"
                           helperText={error?.message}
                           disabled={formData.isMember}
-                          autoComplete='off'
                         />
                       );
                     }}
@@ -331,8 +329,8 @@ const RegisterForm = () => {
                           {...field}
                           error={Boolean(error)}
                           label="Email"
+                          autoComplete="off"
                           helperText={error?.message}
-                          autoComplete='off'
                         />
                       );
                     }}

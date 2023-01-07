@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Radio from '@mui/material/Radio';
 import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Container from '@atoms/GridContainer';
 import Item from '@atoms/GridItem';
@@ -14,26 +19,52 @@ import ConfirmDialog from '@components/molecules/ConfirmDialog';
 import { PAGES_ROUTE, ROUTES } from '@constants/routes';
 import EntryPass from '../EntryPass';
 import { toPng } from 'html-to-image';
+import { getCookie } from '@services/storage';
+
+function parseJwt(token) {
+  var base64Url = token.split('.')[1];
+  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  var jsonPayload = decodeURIComponent(
+    window
+      .atob(base64)
+      .split('')
+      .map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join(''),
+  );
+
+  return JSON.parse(jsonPayload);
+}
+
+const cordinatorDetails = parseJwt(getCookie('token'));
 
 const heads = [
   { id: 'srNo', label: 'Sr No', minWidth: 15 },
   { id: 'name', label: 'Name', minWidth: 15 },
   { id: 'email', label: 'Email', width: 10 },
-  { id: 'mobileNumber', label: 'Mobile No', width: 10 },
-  { id: 'batch', label: 'Batch', width: 10 },
-  { id: 'paymentStatus', label: 'Payment', width: 10 },
-  {
-    label: 'Entry Time',
-    minWidth: 150,
-    format: (itm) =>
-      itm.isAttended ? new Date(itm.updatedAt).toLocaleTimeString('en-US', { hour12: true }) : '',
-  },
-  { id: 'actions', label: 'Actions', minWidth: 150 },
-  { id: '', label: 'Check', minWidth: 150, format: () =><Checkbox />},
 ];
+
+if (cordinatorDetails.email === 'coordinator.one@mhsosa.in') {
+  heads.push({ id: 'mobileNumber', label: 'Mobile No', width: 10 });
+}
+
+heads.push({ id: 'batch', label: 'Batch', width: 10 });
+heads.push({ id: 'paymentStatus', label: 'Payment', width: 10 });
+heads.push({
+  label: 'Entry Time',
+  minWidth: 150,
+  format: (itm) =>
+    itm.isAttended ? new Date(itm.updatedAt).toLocaleTimeString('en-US', { hour12: true }) : '',
+});
+heads.push({ id: 'actions', label: 'Actions', minWidth: 150 });
+if (cordinatorDetails.email === 'coordinator.one@mhsosa.in') {
+  heads.push({ id: '', label: 'Check', minWidth: 150, format: () => <Checkbox /> });
+}
 
 const Listing = () => {
   const [rows, setRows] = useState([]);
+  const [allData, setAllData] = useState([]);
   const [mobileNumber, setMobileNumber] = useState('');
   const [modalData, setModalData] = useState({ enable: false });
   const router = useRouter();
@@ -145,11 +176,13 @@ const Listing = () => {
       </TableBtn>,
     );
 
-    item.actions.push(
-      <TableBtn onClick={() => handleShowCode(item)} key={`qr-${item._id}`}>
-        QRCode
-      </TableBtn>,
-    );
+    if (cordinatorDetails.email === 'coordinator.one@mhsosa.in') {
+      item.actions.push(
+        <TableBtn onClick={() => handleShowCode(item)} key={`qr-${item._id}`}>
+          QRCode
+        </TableBtn>,
+      );
+    }
 
     return item;
   });
@@ -162,6 +195,7 @@ const Listing = () => {
 
       if (result) {
         setRows(result.users);
+        setAllData(result.users);
       }
     }
 
@@ -176,10 +210,26 @@ const Listing = () => {
     setMobileNumber(e.target.value);
   };
 
+  const handleData = (e) => {
+    if (e.target.value === 'all') {
+      setRows(allData);
+    } else {
+      setRows(allData.filter((itm) => String(itm.isAttended) === e.target.value));
+    }
+  };
+
   return (
     <Container>
       <Button onClick={handleQRCode}>Approve QRCode</Button>
       <TextField label="Search Mobile No." variant="outlined" onChange={handleMobileNumber} />
+      <FormControl onChange={handleData}>
+        <FormLabel id="demo-radio-buttons-group-label">Filter</FormLabel>
+        <RadioGroup defaultValue="all">
+          <FormControlLabel value="all" control={<Radio />} label="All" />
+          <FormControlLabel value="true" control={<Radio />} label="Show Approved Only" />
+          <FormControlLabel value="false" control={<Radio />} label="Show Not Approved Only" />
+        </RadioGroup>
+      </FormControl>
       <Item xs={12} sx={{ overflow: 'auto' }}>
         <CreateTable
           heads={heads}

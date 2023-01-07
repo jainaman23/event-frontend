@@ -9,7 +9,7 @@ export const ROUTES = {
 };
 
 export const PAGES_ROUTE = {
-  PAYMENT_SUCCESS: '/event/success',
-  DASHBOARD: '/event/dashboard',
-  VERIFICATION: '/event/verification',
+  PAYMENT_SUCCESS: '/success',
+  DASHBOARD: '/dashboard',
+  VERIFICATION: '/verification',
 };
