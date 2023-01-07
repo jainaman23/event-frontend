@@ -135,14 +135,12 @@ const RegisterForm = () => {
   };
 
   useEffect(() => {
-    if (new Date().getTime() > new Date('2023-01-01T00:00:00.817Z').getTime()) {
-      setRegistrationClosed(true);
-      setModalData({
-        enable: true,
-        close: false,
-        children: <RegistrationClosed />,
-      });
-    }
+    setRegistrationClosed(true);
+    setModalData({
+      enable: true,
+      close: false,
+      children: <RegistrationClosed />,
+    });
   }, []);
 
   useEffect(() => {
@@ -285,6 +283,7 @@ const RegisterForm = () => {
                       error?.message ??
                       '10 डिजिट का मोबाइल नंबर डाले, "+91", "0" या country कोड नहीं डाले '
                     }
+                    autoComplete='off'
                     sx={{}}
                   />
                 );
@@ -308,6 +307,7 @@ const RegisterForm = () => {
                           label="Name"
                           helperText={error?.message}
                           disabled={formData.isMember}
+                          autoComplete='off'
                         />
                       );
                     }}
@@ -332,6 +332,7 @@ const RegisterForm = () => {
                           error={Boolean(error)}
                           label="Email"
                           helperText={error?.message}
+                          autoComplete='off'
                         />
                       );
                     }}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import Container from '@atoms/GridContainer';
 import Item from '@atoms/GridItem';
@@ -28,6 +29,7 @@ const heads = [
       itm.isAttended ? new Date(itm.updatedAt).toLocaleTimeString('en-US', { hour12: true }) : '',
   },
   { id: 'actions', label: 'Actions', minWidth: 150 },
+  { id: '', label: 'Check', minWidth: 150, format: () =><Checkbox />},
 ];
 
 const Listing = () => {
