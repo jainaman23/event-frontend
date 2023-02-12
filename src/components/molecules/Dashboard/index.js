@@ -41,8 +41,7 @@ const cordinatorDetails = parseJwt(getCookie('token'));
 
 const heads = [
   { id: 'srNo', label: 'Sr No', minWidth: 15 },
-  { id: 'name', label: 'Name', minWidth: 15 },
-  { id: 'email', label: 'Email', width: 10 },
+  { id: '', label: 'Name', minWidth: 15, format: (itm) => <><Box sx={{m: 0}}>{`MHS ${itm.batch} ${itm.name}`}</Box><Box sx={{m:0}}>{itm.email}</Box></> },
 ];
 
 if (cordinatorDetails.email === 'coordinator.one@mhsosa.in') {
@@ -176,7 +175,7 @@ const Listing = () => {
       </TableBtn>,
     );
 
-    if (cordinatorDetails.email === 'coordinator.one@mhsosa.in') {
+    if (cordinatorDetails.email === 'coordinator.one@mhsosa.in' || cordinatorDetails.email === 'coordinator.two@mhsosa.in') {
       item.actions.push(
         <TableBtn onClick={() => handleShowCode(item)} key={`qr-${item._id}`}>
           QRCode
