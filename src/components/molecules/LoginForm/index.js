@@ -15,7 +15,7 @@ import Container from '@components/atoms/GridContainer';
 import Item from '@components/atoms/GridItem';
 import { parseJwt } from '@services/global';
 import { setCookie } from '@services/storage';
-import { ROUTES } from '@constants';
+import { PAGES_ROUTE, ROUTES } from '@constants';
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -30,7 +30,7 @@ const LoginForm = () => {
         path: '/',
         expires: new Date(JWTContent.exp * 1000),
       });
-      window.location.href = '/event/dashboard';
+      window.location.href = PAGES_ROUTE.DASHBOARD;
     }
   };
 
