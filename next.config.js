@@ -7,7 +7,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const DEV_ENV = process.env.NODE_ENV === 'development';
 
 const nextConfig = {
-  basePath: '/event',
+  // basePath: '/event',
   async headers() {
     return [
       {
