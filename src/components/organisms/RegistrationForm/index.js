@@ -133,14 +133,14 @@ const RegisterForm = () => {
     }
   };
 
-  useEffect(() => {
-    setRegistrationClosed(true);
-    setModalData({
-      enable: true,
-      close: false,
-      children: <RegistrationClosed />,
-    });
-  }, []);
+  // useEffect(() => {
+  //   setRegistrationClosed(true);
+  //   setModalData({
+  //     enable: true,
+  //     close: false,
+  //     children: <RegistrationClosed />,
+  //   });
+  // }, []);
 
   useEffect(() => {
     async function fetchPlan() {

@@ -21,6 +21,8 @@ import EntryPass from '../EntryPass';
 import { toPng } from 'html-to-image';
 import { getCookie } from '@services/storage';
 
+const CORDINATOR_ONE = 'coordinator.one@gmail.com';
+
 function parseJwt(token) {
   var base64Url = token.split('.')[1];
   var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -40,15 +42,25 @@ function parseJwt(token) {
 const cordinatorDetails = parseJwt(getCookie('token'));
 
 const heads = [
-  { id: 'srNo', label: 'Sr No', minWidth: 15 },
-  { id: '', label: 'Name', minWidth: 15, format: (itm) => <><Box sx={{m: 0}}>{`MHS ${itm.batch} ${itm.name}`}</Box><Box sx={{m:0}}>{itm.email}</Box></> },
+  // { id: 'srNo', label: 'Sr No', minWidth: 15 },
+  {
+    id: '',
+    label: 'Name',
+    minWidth: 15,
+    format: (itm) => (
+      <>
+        <Box sx={{ m: 0 }}>{itm.name}</Box>
+        <Box sx={{ m: 0 }}>{itm.email}</Box>
+      </>
+    ),
+  },
 ];
 
-if (cordinatorDetails.email === 'coordinator.one@mhsosa.in') {
+if (cordinatorDetails.email === CORDINATOR_ONE) {
   heads.push({ id: 'mobileNumber', label: 'Mobile No', width: 10 });
 }
 
-heads.push({ id: 'batch', label: 'Batch', width: 10 });
+// heads.push({ id: 'batch', label: 'Batch', width: 10 });
 heads.push({ id: 'paymentStatus', label: 'Payment', width: 10 });
 heads.push({
   label: 'Entry Time',
@@ -175,7 +187,10 @@ const Listing = () => {
       </TableBtn>,
     );
 
-    if (cordinatorDetails.email === 'coordinator.one@mhsosa.in' || cordinatorDetails.email === 'coordinator.two@mhsosa.in') {
+    if (
+      cordinatorDetails.email === CORDINATOR_ONE ||
+      cordinatorDetails.email === 'coordinator.two@mhsosa.in'
+    ) {
       item.actions.push(
         <TableBtn onClick={() => handleShowCode(item)} key={`qr-${item._id}`}>
           QRCode
@@ -232,7 +247,7 @@ const Listing = () => {
       <Item xs={12} sx={{ overflow: 'auto' }}>
         <CreateTable
           heads={heads}
-          rows={resultsWithActions.filter((itm) => itm.mobileNumber.startsWith(mobileNumber))}
+          rows={resultsWithActions.filter((itm) => itm.mobileNumber?.startsWith(mobileNumber))}
         />
       </Item>
       <ModalWithBlurredBg

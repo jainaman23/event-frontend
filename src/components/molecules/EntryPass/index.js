@@ -22,7 +22,7 @@ export default function EntryPass({ registrationId, registerName }) {
         <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
           2nd Alumni Meet
         </Typography>
-        <Typography sx={{ fontWeight: 500 }}>8 Jan 2023, Sunday</Typography>
+        <Typography sx={{ fontWeight: 500 }}>Sunday</Typography>
         <Typography sx={{ fontWeight: 500 }}>5:00 PM Onwards</Typography>
         <Typography sx={{ fontWeight: 500 }}>MHS School, Tilak Nagar, Jaipur</Typography>
       </Item>
