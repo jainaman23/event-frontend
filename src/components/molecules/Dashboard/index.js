@@ -21,7 +21,7 @@ import EntryPass from '../EntryPass';
 import { toPng } from 'html-to-image';
 import { getCookie } from '@services/storage';
 
-const CORDINATOR_ONE = 'coordinator.one@gmail.com';
+const CORDINATOR_ONE = 'coordinator.one@mhsosa.in';
 
 function parseJwt(token) {
   var base64Url = token.split('.')[1];
@@ -69,7 +69,7 @@ heads.push({
     itm.isAttended ? new Date(itm.updatedAt).toLocaleTimeString('en-US', { hour12: true }) : '',
 });
 heads.push({ id: 'actions', label: 'Actions', minWidth: 150 });
-if (cordinatorDetails.email === 'coordinator.one@mhsosa.in') {
+if (cordinatorDetails.email === CORDINATOR_ONE) {
   heads.push({ id: '', label: 'Check', minWidth: 150, format: () => <Checkbox /> });
 }
 
@@ -187,10 +187,7 @@ const Listing = () => {
       </TableBtn>,
     );
 
-    if (
-      cordinatorDetails.email === CORDINATOR_ONE ||
-      cordinatorDetails.email === 'coordinator.two@mhsosa.in'
-    ) {
+    if (cordinatorDetails.email === CORDINATOR_ONE) {
       item.actions.push(
         <TableBtn onClick={() => handleShowCode(item)} key={`qr-${item._id}`}>
           QRCode
