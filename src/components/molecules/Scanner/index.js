@@ -38,7 +38,7 @@ const LoginForm = ({ submitHandler }) => {
 
     if (result && result.user) {
       setSuccessMessage({ type: 'success', message: 'Member verified successfully' });
-      window.location.href = '/event/verification';
+      window.location.href = '/verification';
     }
   }, []);
 

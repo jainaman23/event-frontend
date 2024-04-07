@@ -19,7 +19,7 @@ export default function MyApp(props) {
       <Head>
         <title>Event | 2nd Alumni Meet</title>
         <meta name="description" content="Alumni Event" />
-        <link rel="icon" href="/event/favicon.ico" />
+        <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <StateProvider>
