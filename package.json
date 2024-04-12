@@ -21,7 +21,7 @@
     "eslint": "8.29.0",
     "eslint-config-next": "13.0.6",
     "eslint-config-prettier": "^8.5.0",
-    "html-to-image": "^1.11.3",
+    "html-to-image": "^1.11.11",
     "lodash.debounce": "^4.0.8",
     "moment": "^2.29.4",
     "next": "13.0.6",
