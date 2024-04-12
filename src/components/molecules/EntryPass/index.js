@@ -12,17 +12,17 @@ export default function EntryPass({ registrationId, registerName }) {
       <Box
         sx={{
           position: 'absolute',
-          bottom: 66,
+          bottom: 130,
           display: 'flex',
           flexDirection: 'column',
           width: '100%',
           alignItems: 'center',
         }}
       >
-        <Box component={Paper} sx={{ p: 1 }}>
-          <QRCode title="Entry Pass" value={registrationId} size={180} />
+        <Box component={Paper} sx={{ padding: '8px 8px 2px 8px' }}>
+          <QRCode title="Entry Pass" value={registrationId} size={140} />
         </Box>
-        <Typography variant="h6" sx={{ mt: 2, fontWeight: 'bold', color: '#fff', fontSize: 24 }}>
+        <Typography variant="h6" sx={{ mt: 2, fontWeight: 'bold', color: '#fff', fontSize: 18 }}>
           {registerName}
         </Typography>
       </Box>

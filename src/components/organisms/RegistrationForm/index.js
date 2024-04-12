@@ -56,6 +56,11 @@ const RegisterForm = () => {
   const [membership, setMembership] = useState(false);
   const { handleSubmit, control, reset, getValues } = useForm();
 
+  const MEMBERSHIP_FEES = plan['MEMBERSHIP']?.amount;
+  const EVENT_FEES = plan['MEMBER']?.amount;
+  const MEMBERSHIP_FEES_FORMATTED = formattedAmount(MEMBERSHIP_FEES, { currency: 'INR' });
+  const EVENT_FEES_FORMATTED = formattedAmount(EVENT_FEES, { currency: 'INR' });
+
   const handlePayment = async (userDetails, order) => {
     if (order) {
       const options = {
@@ -397,16 +402,10 @@ const RegisterForm = () => {
                                     checked={field.value}
                                   />
                                 }
-                                label={`Join with Lifetime Membership (${formattedAmount(
-                                  plan['MEMBERSHIP']?.amount - plan['MEMBER']?.amount,
-                                  {
-                                    currency: 'INR',
-                                  },
-                                )}) + Event Entry (${formattedAmount(plan['MEMBER']?.amount, {
-                                  currency: 'INR',
-                                })}) in ${formattedAmount(plan['MEMBERSHIP']?.amount, {
-                                  currency: 'INR',
-                                })} only`}
+                                label={`Join with Lifetime Membership at ${MEMBERSHIP_FEES_FORMATTED} (${formattedAmount(
+                                  Number(MEMBERSHIP_FEES) - Number(EVENT_FEES),
+                                  { currency: 'INR' },
+                                )} + ${EVENT_FEES_FORMATTED} for Event Entry)`}
                               />
                             </FormGroup>
                           </Box>

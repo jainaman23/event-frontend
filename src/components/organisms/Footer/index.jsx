@@ -12,8 +12,21 @@ const Footer = () => {
     >
       <Item xs={12} sx={{ background: 'white' }}>
         <Divider />
-        <Container sx={{ height: '56px', alignItems: 'center', px: 6 }}>
-          <Typography>© All rights reserved.</Typography>
+        <Container
+          sx={{
+            height: '56px',
+            alignItems: 'center',
+            px: 6,
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Typography>Copyright © 2024 MHSOSA. All rights reserved.</Typography>
+          <Typography>
+            <a href="https://lata.tech" target="_blank" class="" rel="noreferrer">
+              Powered By Lata.tech
+            </a>
+          </Typography>
         </Container>
       </Item>
     </Container>

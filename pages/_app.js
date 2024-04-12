@@ -17,7 +17,7 @@ export default function MyApp(props) {
   return (
     <React.Fragment>
       <Head>
-        <title>Event | 2nd Alumni Meet</title>
+        <title>Event | Alumni Meet</title>
         <meta name="description" content="Alumni Event" />
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="initial-scale=1, width=device-width" />
