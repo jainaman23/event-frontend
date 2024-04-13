@@ -454,7 +454,7 @@ const RegisterForm = () => {
                   type="button"
                   onClick={() => router.reload()}
                 >
-                  Reset
+                  Back
                 </Button>
               </Item>
             )}
