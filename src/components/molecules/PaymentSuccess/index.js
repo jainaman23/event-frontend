@@ -10,6 +10,7 @@ import EntryPass from '../EntryPass';
 export default function PaymentSuccess() {
   const registrationId = sessionStorage.getItem('registrationId');
   const registerName = sessionStorage.getItem('registerName');
+  const registerType = sessionStorage.getItem('registerType');
 
   const handleClick = () => {
     const svg = document.getElementById('QRCode');
@@ -34,6 +35,37 @@ export default function PaymentSuccess() {
         console.error('oops, something went wrong!', error);
       });
   };
+
+  const handleClose = () => {
+    window.location.href = '/registration';
+  };
+
+  if (registerType === 'NEW_MEMBER') {
+    return (
+      <Box
+        sx={{
+          minHeight: '80vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center',
+        }}
+      >
+        <Container rowSpacing={{ xs: 2 }} flexDirection="column" alignItems="center">
+          <Item>
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              Thank you for choosing to join our lifetime membership! Get ready for a journey filled
+              with excitement, camaraderie, and unforgettable memories.
+            </Typography>
+            <Typography variant="h6">Welcome aboard!</Typography>
+          </Item>
+          <Item>
+            <Button onClick={handleClose}>Close</Button>
+          </Item>
+        </Container>
+      </Box>
+    );
+  }
 
   return (
     <Box

@@ -60,7 +60,7 @@ if (cordinatorDetails.email === CORDINATOR_ONE) {
   heads.push({ id: 'mobileNumber', label: 'Mobile No', width: 10 });
 }
 
-// heads.push({ id: 'batch', label: 'Batch', width: 10 });
+heads.push({ id: 'batch', label: 'Batch', width: 10 });
 heads.push({ id: 'paymentStatus', label: 'Payment', width: 10 });
 heads.push({
   label: 'Entry Time',

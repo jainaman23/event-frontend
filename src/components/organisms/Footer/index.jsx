@@ -23,7 +23,7 @@ const Footer = () => {
         >
           <Typography>Copyright © 2024 MHSOSA. All rights reserved.</Typography>
           <Typography>
-            <a href="https://lata.tech" target="_blank" class="" rel="noreferrer">
+            <a href="https://lata.tech" target="_blank" className="" rel="noreferrer">
               Powered By Lata.tech
             </a>
           </Typography>

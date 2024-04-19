@@ -5,10 +5,10 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
-import Checkbox from '@mui/material/Checkbox';
+import RadioGroup from '@mui/material/RadioGroup';
+import Radio from '@mui/material/Radio';
 import FormHelperText from '@mui/material/FormHelperText';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -53,13 +53,25 @@ const RegisterForm = () => {
   const [paymentError, setPaymentError] = useState(false);
   const [modalData, setModalData] = useState({ enable: false });
   const [plan, setPlan] = useState({});
-  const [membership, setMembership] = useState(false);
+  const [membership, setMembership] = useState('MEMBERSHIP');
   const { handleSubmit, control, reset, getValues } = useForm();
 
-  const MEMBERSHIP_FEES = plan['MEMBERSHIP']?.amount;
-  const EVENT_FEES = plan['MEMBER']?.amount;
-  const MEMBERSHIP_FEES_FORMATTED = formattedAmount(MEMBERSHIP_FEES, { currency: 'INR' });
-  const EVENT_FEES_FORMATTED = formattedAmount(EVENT_FEES, { currency: 'INR' });
+  const MEMBERSHIP_FEES = Number(plan?.['MEMBERSHIP']?.amount);
+  const EVENT_FEES = Number(plan?.['NON_MEMBER']?.amount);
+  const MEMBER_EVENT_FEES = Number(plan?.['MEMBER']?.amount);
+  const MEMBER_FEES = Number(plan?.['NEW_MEMBER']?.amount);
+  const MEMBERSHIP_AMOUNT = formattedAmount(MEMBERSHIP_FEES, { currency: 'INR' });
+  const EVENT_AMOUNT = formattedAmount(EVENT_FEES, { currency: 'INR' });
+  const MEMBER_EVENT_AMOUNT = formattedAmount(MEMBER_EVENT_FEES, {
+    currency: 'INR',
+  });
+  const MEMBER_AMOUNT = formattedAmount(MEMBER_FEES, {
+    currency: 'INR',
+  });
+
+  const MEMBERSHIP_REGISTER = `Join with Lifetime Membership at ${MEMBERSHIP_AMOUNT} (${MEMBER_AMOUNT} + ${MEMBER_EVENT_AMOUNT} for Event Entry)`;
+  const EVENT_REGISTER = `Just want to register for event at ${EVENT_AMOUNT}`;
+  const MEMBER_REGISTER = `Just want to become Life Member at ${MEMBER_AMOUNT}`;
 
   const handlePayment = async (userDetails, order) => {
     if (order) {
@@ -87,6 +99,7 @@ const RegisterForm = () => {
     if (response && order?.registrationId) {
       sessionStorage.setItem('registrationId', order.registrationId);
       sessionStorage.setItem('registerName', userDetails.name);
+      sessionStorage.setItem('registerType', userDetails.registrationType);
       router.push(PAGES_ROUTE.PAYMENT_SUCCESS);
     }
   };
@@ -107,7 +120,8 @@ const RegisterForm = () => {
         batch: data.batch,
         mobileNumber: data.mobileNumber,
         countryCode: '91',
-        joinMembership: data.joinMembership ?? false,
+        joinMembership: data.registrationType === 'MEMBERSHIP',
+        registrationType: data.isMember ? 'MEMBER' : membership,
       },
     });
 
@@ -131,21 +145,23 @@ const RegisterForm = () => {
         mobileNumber,
         name: result.member?.name,
         email: result.member?.email,
-        isMember: result.isMember,
+        isMember: result?.isMember,
         isRegistered: result.isRegistered,
         registrationId: result.member?._id,
+        registrationType: result.member?.registrationType,
       });
     }
   };
 
-  // useEffect(() => {
-  //   setRegistrationClosed(true);
-  //   setModalData({
-  //     enable: true,
-  //     close: false,
-  //     children: <RegistrationClosed />,
-  //   });
-  // }, []);
+  useEffect(() => {
+    sessionStorage.clear();
+    // setRegistrationClosed(true);
+    // setModalData({
+    //   enable: true,
+    //   close: false,
+    //   children: <RegistrationClosed />,
+    // });
+  }, []);
 
   useEffect(() => {
     async function fetchPlan() {
@@ -184,6 +200,12 @@ const RegisterForm = () => {
     if (result) {
       paymentSuccess(result);
     }
+  };
+
+  const AMOUNT_TABLE = {
+    MEMBERSHIP: MEMBERSHIP_AMOUNT,
+    EVENT: EVENT_AMOUNT,
+    NEW_MEMBER: MEMBER_AMOUNT,
   };
 
   return (
@@ -378,7 +400,7 @@ const RegisterForm = () => {
                     </Typography>
                   ) : (
                     <Box>
-                      <Controller
+                      {/* <Controller
                         name="joinMembership"
                         defaultValue={false}
                         control={control}
@@ -410,6 +432,49 @@ const RegisterForm = () => {
                             </FormGroup>
                           </Box>
                         )}
+                      /> */}
+                      <Controller
+                        name="registrationType"
+                        defaultValue={false}
+                        control={control}
+                        render={({ field }) => (
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              whiteSpace: 'break-spaces',
+                            }}
+                          >
+                            <FormControl>
+                              <RadioGroup
+                                aria-labelledby="demo-radio-buttons-group-label"
+                                defaultValue={membership}
+                                name="radio-buttons-group"
+                                value={membership}
+                                onChange={(e, value) => {
+                                  field.onChange(value);
+                                  setMembership(value);
+                                }}
+                              >
+                                <FormControlLabel
+                                  value="MEMBERSHIP"
+                                  control={<Radio />}
+                                  label={MEMBERSHIP_REGISTER}
+                                />
+                                <FormControlLabel
+                                  value="EVENT"
+                                  control={<Radio />}
+                                  label={EVENT_REGISTER}
+                                />
+                                <FormControlLabel
+                                  value="NEW_MEMBER"
+                                  control={<Radio />}
+                                  label={MEMBER_REGISTER}
+                                />
+                              </RadioGroup>
+                            </FormControl>
+                          </Box>
+                        )}
                       />
                     </Box>
                   )}
@@ -432,14 +497,7 @@ const RegisterForm = () => {
                       </Button>
                     ) : (
                       <Button variant="contained" color="primary" type="submit">
-                        {`Proceed & Pay(${formattedAmount(
-                          formData.joinMembership
-                            ? plan['MEMBERSHIP'].amount
-                            : plan['NON_MEMBER'].amount,
-                          {
-                            currency: 'INR',
-                          },
-                        )})`}
+                        {`Proceed & Pay(${AMOUNT_TABLE[membership]})`}
                       </Button>
                     )}
                   </>

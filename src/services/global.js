@@ -18,7 +18,7 @@ export function parseJwt(token) {
 
 export const isObjectEmpty = (obj = {}) => Object.keys(obj).length === 0;
 
-export const formattedAmount = (amt, { locale = 'en-IN', currency = 'INR' }) =>
+export const formattedAmount = (amt = 0, { locale = 'en-IN', currency = 'INR' }) =>
   new Intl.NumberFormat(locale, {
     style: 'currency',
     currency,
