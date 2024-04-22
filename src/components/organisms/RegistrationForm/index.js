@@ -69,9 +69,9 @@ const RegisterForm = () => {
     currency: 'INR',
   });
 
-  const MEMBERSHIP_REGISTER = `Join with Lifetime Membership at ${MEMBERSHIP_AMOUNT} (${MEMBER_AMOUNT} + ${MEMBER_EVENT_AMOUNT} for Event Entry)`;
-  const EVENT_REGISTER = `Just want to register for event at ${EVENT_AMOUNT}`;
-  const MEMBER_REGISTER = `Just want to become Life Member at ${MEMBER_AMOUNT}`;
+  const MEMBERSHIP_REGISTER = `लाइफटाइम मेंबरशिप के साथ कार्यक्रम में भागीदारी: ${MEMBERSHIP_AMOUNT} (कार्यक्रम में भाग लेने और आजीवन सदस्यता हेतु। इसमें प्रवेश शुल्क ${MEMBER_EVENT_AMOUNT} और सदस्यता शुल्क ${MEMBER_AMOUNT} शामिल है।)`;
+  const EVENT_REGISTER = `केवल इवेंट में भागीदारी: ${EVENT_AMOUNT} (जो लाइफटाइम मेंबरशिप प्राप्त किए बिना इवेंट में भाग लेना चाहते हैं।)`;
+  const MEMBER_REGISTER = `केवल लाइफटाइम मेंबरशिप: ${MEMBER_AMOUNT} (किसी कारण कार्यक्रम में शामिल नहीं हो सकते लेकिन आजीवन सदस्यता प्राप्त करना चाहते हैं।)`;
 
   const handlePayment = async (userDetails, order) => {
     if (order) {

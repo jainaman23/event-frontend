@@ -54,10 +54,11 @@ export default function PaymentSuccess() {
         <Container rowSpacing={{ xs: 2 }} flexDirection="column" alignItems="center">
           <Item>
             <Typography variant="h6" sx={{ mb: 2 }}>
-              Thank you for choosing to join our lifetime membership! Get ready for a journey filled
-              with excitement, camaraderie, and unforgettable memories.
+              MHSOSA लाइफटाइम मेंबर बनने के लिए धन्यवाद!
             </Typography>
-            <Typography variant="h6">Welcome aboard!</Typography>
+            <Typography variant="h6">
+              MHSOSA द्वारा आगामी कार्यक्रम की जानकारी आपको दी जाएगी।
+            </Typography>
           </Item>
           <Item>
             <Button onClick={handleClose}>Close</Button>
