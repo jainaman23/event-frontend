@@ -272,7 +272,7 @@ const RegisterForm = () => {
           </Item>
           <Item xs={12}>
             <Typography variant="h2" sx={{ mb: 2 }}>
-              Registration Form
+              Event Registration / Life Membership Form
             </Typography>
           </Item>
           {!showForm && (
