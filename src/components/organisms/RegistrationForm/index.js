@@ -70,8 +70,8 @@ const RegisterForm = () => {
   });
 
   const MEMBERSHIP_REGISTER = `लाइफटाइम मेंबरशिप के साथ कार्यक्रम में भागीदारी: ${MEMBERSHIP_AMOUNT} (कार्यक्रम में भाग लेने और आजीवन सदस्यता हेतु। इसमें प्रवेश शुल्क ${MEMBER_EVENT_AMOUNT} और सदस्यता शुल्क ${MEMBER_AMOUNT} शामिल है।)`;
-  const EVENT_REGISTER = `केवल इवेंट में भागीदारी: ${EVENT_AMOUNT} (जो लाइफटाइम मेंबरशिप प्राप्त किए बिना इवेंट में भाग लेना चाहते हैं।)`;
-  const MEMBER_REGISTER = `केवल लाइफटाइम मेंबरशिप: ${MEMBER_AMOUNT} (किसी कारण कार्यक्रम में शामिल नहीं हो सकते लेकिन आजीवन सदस्यता प्राप्त करना चाहते हैं।)`;
+  // const EVENT_REGISTER = `केवल इवेंट में भागीदारी: ${EVENT_AMOUNT} (जो लाइफटाइम मेंबरशिप प्राप्त किए बिना इवेंट में भाग लेना चाहते हैं।)`;
+  // const MEMBER_REGISTER = `केवल लाइफटाइम मेंबरशिप: ${MEMBER_AMOUNT} (किसी कारण कार्यक्रम में शामिल नहीं हो सकते लेकिन आजीवन सदस्यता प्राप्त करना चाहते हैं।)`;
 
   const handlePayment = async (userDetails, order) => {
     if (order) {
@@ -155,12 +155,12 @@ const RegisterForm = () => {
 
   useEffect(() => {
     sessionStorage.clear();
-    // setRegistrationClosed(true);
-    // setModalData({
-    //   enable: true,
-    //   close: false,
-    //   children: <RegistrationClosed />,
-    // });
+    setRegistrationClosed(true);
+    setModalData({
+      enable: true,
+      close: false,
+      children: <RegistrationClosed />,
+    });
   }, []);
 
   useEffect(() => {
@@ -461,7 +461,7 @@ const RegisterForm = () => {
                                   control={<Radio />}
                                   label={MEMBERSHIP_REGISTER}
                                 />
-                                <FormControlLabel
+                                {/* <FormControlLabel
                                   value="EVENT"
                                   control={<Radio />}
                                   label={EVENT_REGISTER}
@@ -470,7 +470,7 @@ const RegisterForm = () => {
                                   value="NEW_MEMBER"
                                   control={<Radio />}
                                   label={MEMBER_REGISTER}
-                                />
+                                /> */}
                               </RadioGroup>
                             </FormControl>
                           </Box>
