@@ -155,12 +155,12 @@ const RegisterForm = () => {
 
   useEffect(() => {
     sessionStorage.clear();
-    setRegistrationClosed(true);
-    setModalData({
-      enable: true,
-      close: false,
-      children: <RegistrationClosed />,
-    });
+    // setRegistrationClosed(true);
+    // setModalData({
+    //   enable: true,
+    //   close: false,
+    //   children: <RegistrationClosed />,
+    // });
   }, []);
 
   useEffect(() => {
