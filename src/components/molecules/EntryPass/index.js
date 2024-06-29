@@ -14,10 +14,17 @@ export default function EntryPass({ registrationId, registerName }) {
       id="QRCode"
     >
       <Item sx={{ position: 'relative' }}>
-        <NextImage src="/srajan-2024.jpeg" width={484} height={819} alt="" />
+        <NextImage src="/bg-srajan.jpg" width={480} height={807} alt="" />
 
         <Item
-          sx={{ position: 'absolute', bottom: '45px', width: '254px', left: '115px', right: 0 }}
+          sx={{
+            position: 'absolute',
+            bottom: '86px',
+            width: '230px',
+            left: 0,
+            right: 0,
+            margin: 'auto',
+          }}
         >
           <Box
             sx={{
