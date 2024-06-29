@@ -18,8 +18,8 @@ export default function MyApp(props) {
     <React.Fragment>
       <Head>
         <title>Event | Srajan</title>
-        <meta name="description" content="Alumni Event" />
-        <link rel="icon" href="/favicon.ico" />
+        <meta name="description" content="Event" />
+        {/* <link rel="icon" href="/favicon.ico" /> */}
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <StateProvider>
